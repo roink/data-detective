@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Data Detective: Spot the Dirty Data</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --ink: #172033;
+      --muted: #5d6b82;
+      --line: #d9e0ea;
+      --accent: #315efb;
+      --accent-soft: #e9edff;
+      --good: #157a3f;
+      --good-soft: #e8f7ee;
+      --bad: #b42318;
+      --bad-soft: #fff0ed;
+      --warn: #8a5a00;
+      --warn-soft: #fff7df;
+      --shadow: 0 20px 45px rgba(23, 32, 51, 0.10);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, #e9edff 0, transparent 34rem),
+        linear-gradient(180deg, #fbfcff 0%, var(--bg) 100%);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    .page {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: var(--accent);
+      color: white;
+      font-size: 1.4rem;
+      font-weight: 900;
+      box-shadow: var(--shadow);
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      font-size: clamp(1.4rem, 2vw, 2rem);
+      line-height: 1.1;
+      margin-bottom: 3px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+      font-size: 0.98rem;
+    }
+
+    .stats {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.82);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      white-space: nowrap;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .intro {
+      padding: 28px;
+    }
+
+    .intro h2 {
+      font-size: clamp(1.7rem, 5vw, 3.4rem);
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      max-width: 780px;
+      margin-bottom: 16px;
+    }
+
+    .intro p {
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.55;
+      max-width: 780px;
+      margin-bottom: 18px;
+    }
+
+    .intro .micro-rules {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin: 22px 0;
+    }
+
+    .rule {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: #fbfcff;
+      min-height: 104px;
+    }
+
+    .rule strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .rule span {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.4;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 12px;
+      padding: 11px 15px;
+      background: var(--accent);
+      color: white;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+      box-shadow: 0 10px 24px rgba(49, 94, 251, 0.22);
+      font-size: 0.96rem;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .secondary {
+      background: #eef2f7;
+      color: var(--ink);
+      box-shadow: none;
+      border: 1px solid var(--line);
+    }
+
+    .danger {
+      background: var(--bad-soft);
+      color: var(--bad);
+      box-shadow: none;
+      border: 1px solid #ffd2cc;
+    }
+
+    .game-card {
+      display: none;
+    }
+
+    .game-card.active {
+      display: block;
+    }
+
+    .round-head {
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 10px;
+    }
+
+    .round-kicker {
+      color: var(--accent);
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+    }
+
+    .round-title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .round-head h2 {
+      margin: 0;
+      font-size: clamp(1.25rem, 2vw, 1.8rem);
+      letter-spacing: -0.02em;
+    }
+
+    .instruction {
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .progress-wrap {
+      height: 10px;
+      background: #eef2f7;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      border-radius: 999px;
+      transition: width 0.2s ease;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      padding: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.95rem;
+      min-width: 760px;
+    }
+
+    th, td {
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 10px 11px;
+      text-align: left;
+      vertical-align: middle;
+      background: white;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      background: #f4f7fb;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #3d4b63;
+      z-index: 1;
+    }
+
+    th:first-child, td:first-child {
+      border-left: 1px solid var(--line);
+    }
+
+    tr:first-child th:first-child { border-top-left-radius: 12px; }
+    tr:first-child th:last-child { border-top-right-radius: 12px; }
+    tbody tr:last-child td:first-child { border-bottom-left-radius: 12px; }
+    tbody tr:last-child td:last-child { border-bottom-right-radius: 12px; }
+
+    td.clickable {
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      transition: background 0.1s ease, outline 0.1s ease;
+    }
+
+    td.clickable:hover {
+      background: #f8faff;
+      outline: 2px solid var(--accent-soft);
+      outline-offset: -2px;
+    }
+
+    td.correct {
+      background: var(--good-soft);
+      color: #073f20;
+      outline: 2px solid #7bd99e;
+      outline-offset: -2px;
+      font-weight: 800;
+    }
+
+    td.wrong {
+      background: var(--bad-soft);
+      color: var(--bad);
+      animation: shake 0.18s linear 1;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      75% { transform: translateX(2px); }
+    }
+
+    .game-footer {
+      border-top: 1px solid var(--line);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .feedback {
+      min-height: 22px;
+      color: var(--muted);
+      font-weight: 650;
+      flex: 1 1 360px;
+    }
+
+    .feedback.good { color: var(--good); }
+    .feedback.bad { color: var(--bad); }
+
+    .side {
+      display: grid;
+      gap: 18px;
+      position: sticky;
+      top: 18px;
+    }
+
+    .side-card {
+      padding: 18px;
+    }
+
+    .side-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .side-card p, .side-card li {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.95rem;
+    }
+
+    .side-card ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .lesson {
+      border-left: 5px solid var(--accent);
+      background: #fbfcff;
+    }
+
+    .lesson.locked {
+      border-left-color: var(--line);
+    }
+
+    .lesson .principle {
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .mini-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.82rem;
+      background: #111827;
+      color: #e5e7eb;
+      padding: 10px;
+      border-radius: 10px;
+      overflow-x: auto;
+      white-space: pre;
+      margin-top: 10px;
+    }
+
+    .hidden { display: none !important; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      background: #111827;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 999px;
+      box-shadow: var(--shadow);
+      font-weight: 800;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.16s ease, transform 0.16s ease;
+      z-index: 10;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    .completion {
+      padding: 28px;
+      text-align: center;
+      display: none;
+    }
+
+    .completion.active {
+      display: block;
+    }
+
+    .completion h2 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: -0.04em;
+      margin-bottom: 10px;
+    }
+
+    .completion p {
+      color: var(--muted);
+      max-width: 680px;
+      margin: 0 auto 18px;
+      line-height: 1.55;
+    }
+
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      max-width: 760px;
+      margin: 22px auto;
+    }
+
+    .badge {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: #fbfcff;
+      text-align: left;
+    }
+
+    .badge strong { display: block; margin-bottom: 4px; }
+    .badge span { color: var(--muted); font-size: 0.92rem; line-height: 1.35; }
+
+    @media (max-width: 900px) {
+      header { align-items: flex-start; flex-direction: column; }
+      .stats { justify-content: flex-start; }
+      .layout { grid-template-columns: 1fr; }
+      .side { position: static; }
+      .intro .micro-rules, .badge-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">D</div>
+        <div>
+          <h1>Data Detective</h1>
+          <p class="subtitle">A tiny data-cleaning game for tables, typos, units, dates, and suspicious values.</p>
+        </div>
+      </div>
+      <div class="stats" aria-live="polite">
+        <div class="pill">Round <span id="roundNow">0</span>/<span id="roundTotal">0</span></div>
+        <div class="pill">Score <span id="score">0</span></div>
+        <div class="pill">Mistakes <span id="mistakes">0</span></div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section>
+        <div id="intro" class="card intro">
+          <h2>Click the wrong data.</h2>
+          <p>You are given a small table. Some cells look harmless to a human, but would break analysis, import scripts, database validation, or machine-learning preprocessing. Click suspicious cells to flag them.</p>
+          <div class="micro-rules" aria-label="Game rules">
+            <div class="rule"><strong>1. Scan the column</strong><span>Ask: what format or meaning does this column appear to expect?</span></div>
+            <div class="rule"><strong>2. Click bad cells</strong><span>Only cells are clickable. Correct clicks reveal the reason immediately.</span></div>
+            <div class="rule"><strong>3. Learn the pattern</strong><span>Each round adds one useful data-management principle.</span></div>
+          </div>
+          <div class="button-row">
+            <button id="startBtn">Start with an easy one</button>
+            <button id="skipIntroBtn" class="secondary">Skip intro next time</button>
+          </div>
+        </div>
+
+        <div id="game" class="card game-card" aria-live="polite">
+          <div class="round-head">
+            <div class="round-kicker" id="roundKicker">Round</div>
+            <div class="round-title-row">
+              <h2 id="roundTitle"></h2>
+              <div class="pill"><span id="foundCount">0</span>/<span id="targetCount">0</span> found</div>
+            </div>
+            <p class="instruction" id="instruction"></p>
+            <div class="progress-wrap" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
+          </div>
+          <div class="table-wrap">
+            <table id="dataTable"></table>
+          </div>
+          <div class="game-footer">
+            <div id="feedback" class="feedback">Click a cell that looks wrong.</div>
+            <div class="button-row">
+              <button id="hintBtn" class="secondary">Hint</button>
+              <button id="nextBtn" disabled>Next round</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="completion" class="card completion">
+          <h2>Clean data unlocked.</h2>
+          <p>You found the kinds of small inconsistencies that often cost hours later: mixed units, text in numeric fields, date ambiguity, controlled-vocabulary drift, duplicate IDs, and impossible values.</p>
+          <div class="badge-grid">
+            <div class="badge"><strong>Type consistency</strong><span>Numbers should be numbers, dates should be dates, codes should be codes.</span></div>
+            <div class="badge"><strong>Explicit units</strong><span>Store units in metadata or column names, not mixed into individual cells.</span></div>
+            <div class="badge"><strong>Validation rules</strong><span>Ranges, uniqueness, and controlled vocabularies catch many errors early.</span></div>
+          </div>
+          <div class="button-row" style="justify-content:center">
+            <button id="restartBtn">Play again</button>
+            <button id="copyBtn" class="secondary">Copy lesson ideas</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side">
+        <div class="card side-card">
+          <h3>What to look for</h3>
+          <ul id="lookForList">
+            <li>Unexpected text in numeric columns</li>
+            <li>Mixed decimal separators</li>
+            <li>Units inside cells</li>
+            <li>Dates that are ambiguous or impossible</li>
+          </ul>
+        </div>
+        <div id="lessonCard" class="card side-card lesson locked">
+          <h3>Round lesson</h3>
+          <p class="principle" id="lessonPrinciple">Finish a round to unlock the lesson.</p>
+          <p id="lessonText">Good data management is partly about making invalid entries hard to enter in the first place.</p>
+          <div id="lessonCode" class="mini-code hidden"></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const rounds = [
+      {
+        title: "A number column should contain numbers",
+        instruction: "The column 'count' is supposed to be an integer. Find the cell that would break a numeric import.",
+        columns: ["sample_id", "site", "count", "collector"],
+        rows: [
+          ["S-001", "Aldenhoven", "8", "Mira"],
+          ["S-002", "Bonn", "12", "Jonas"],
+          ["S-003", "Cologne", "ten", "Lea"],
+          ["S-004", "Jülich", "7", "Mira"],
+          ["S-005", "Aachen", "15", "Noah"]
+        ],
+        answers: {
+          "2-2": "'ten' is meaningful to humans, but not a numeric value. Use 10 or keep a separate comment field."
+        },
+        hint: "Look for the value that is written as a word rather than as a number.",
+        lesson: {
+          principle: "Keep each column type consistent.",
+          text: "A numeric column should stay numeric from top to bottom. This makes validation, statistics, plotting, and database imports predictable.",
+          code: "Number.isFinite(Number(value))"
+        },
+        lookFor: ["Words in numeric columns", "Invisible spaces", "Symbols such as ~, <, >", "Numbers stored as comments"]
+      },
+      {
+        title: "Same measurement, different formats",
+        instruction: "The column 'height_m' expects height in metres using a dot as decimal separator. Click every cell that violates that rule.",
+        columns: ["person_id", "height_m", "age", "survey_wave"],
+        rows: [
+          ["P-104", "1.72", "32", "2026-A"],
+          ["P-105", "1,84", "28", "2026-A"],
+          ["P-106", "184cm", "41", "2026-A"],
+          ["P-107", "1.67", "35", "2026-A"],
+          ["P-108", "1.61", "30", "2026-A"]
+        ],
+        answers: {
+          "1-1": "'1,84' may be common in German notation, but this dataset expects machine-readable dot decimals: 1.84.",
+          "2-1": "'184cm' mixes a value and a unit inside one cell. This column expects metres only, e.g. 1.84."
+        },
+        hint: "The values all mean plausible human heights, but the column has one expected unit and one expected decimal convention.",
+        lesson: {
+          principle: "Units and decimal conventions are data contracts.",
+          text: "Decide whether a column stores metres or centimetres, document that choice, and validate it. Never rely on people to infer units from context.",
+          code: "/^\\d+\\.\\d+$/.test(value)"
+        },
+        lookFor: ["Mixed units", "Decimal comma versus decimal point", "Unit text inside cells", "Plausible but inconsistent values"]
+      },
+      {
+        title: "Dates need one unambiguous format",
+        instruction: "The column 'sample_date' expects ISO dates: YYYY-MM-DD. Click every date entry that is ambiguous, missing, or impossible.",
+        columns: ["sample_id", "sample_date", "location", "temperature_c"],
+        rows: [
+          ["W-201", "2026-03-04", "River bank", "8.2"],
+          ["W-202", "03/04/2026", "Forest edge", "7.9"],
+          ["W-203", "2026-02-31", "Hill slope", "6.4"],
+          ["W-204", "NA", "Lake shore", "5.7"],
+          ["W-205", "2026-03-11", "Field path", "8.8"]
+        ],
+        answers: {
+          "1-1": "'03/04/2026' is ambiguous: March 4 or April 3, depending on locale. Use ISO format: 2026-03-04 or 2026-04-03.",
+          "2-1": "'2026-02-31' has the right shape but is not a real calendar date.",
+          "3-1": "'NA' is a missing-value code, not a date. Missing values should be handled consistently and documented."
+        },
+        hint: "One date has the wrong format, one cannot exist, and one is not a date at all.",
+        lesson: {
+          principle: "Format validation is not enough; semantic validation matters too.",
+          text: "A value can look like a date and still be invalid. Good checks verify both the pattern and whether the date exists.",
+          code: "const d = new Date(value);\n!Number.isNaN(d.getTime())"
+        },
+        lookFor: ["Ambiguous date formats", "Impossible dates", "Undocumented missing values", "Locale-dependent parsing"]
+      },
+      {
+        title: "Controlled vocabularies prevent category drift",
+        instruction: "The column 'land_cover' allows only: forest, grassland, shrubland, wetland. Click entries that would need cleaning before analysis.",
+        columns: ["plot_id", "land_cover", "observer", "confidence"],
+        rows: [
+          ["L-011", "forest", "A. Klein", "high"],
+          ["L-012", "Forrest", "A. Klein", "medium"],
+          ["L-013", "grass land", "B. Imani", "high"],
+          ["L-014", "wetland", "C. Weber", "medium"],
+          ["L-015", "forest/wetland", "B. Imani", "low"],
+          ["L-016", "shrubland", "C. Weber", "high"]
+        ],
+        answers: {
+          "1-1": "'Forrest' is a spelling variant or typo. It should probably be 'forest'.",
+          "2-1": "'grass land' is not the agreed category label 'grassland'.",
+          "4-1": "'forest/wetland' stores two categories in one cell. Use a defined mixed category or separate fields."
+        },
+        hint: "The problem is not whether the words are understandable; it is whether they match the allowed values exactly.",
+        lesson: {
+          principle: "Use controlled vocabularies for categories.",
+          text: "Small spelling and spacing differences create fake groups in summaries and plots. Dropdowns, lookup tables, and database constraints help prevent this.",
+          code: "allowed.has(value.toLowerCase().trim())"
+        },
+        lookFor: ["Typos in labels", "Plural/singular variants", "Whitespace and capitalization", "Multiple values in one cell"]
+      },
+      {
+        title: "IDs, coordinates, and ranges",
+        instruction: "This table should have unique sample IDs, latitude between -90 and 90, and longitude between -180 and 180. Click every invalid cell.",
+        columns: ["sample_id", "latitude", "longitude", "material"],
+        rows: [
+          ["G-801", "50.941", "6.958", "charcoal"],
+          ["G-802", "51.224", "6.776", "bone"],
+          ["G-802", "50.737", "7.102", "sediment"],
+          ["G-804", "504.12", "6.881", "charcoal"],
+          ["G-805", "50.980", "181.22", "pollen"]
+        ],
+        answers: {
+          "2-0": "This sample_id is duplicated. IDs should uniquely identify records unless the table design explicitly allows repeats.",
+          "3-1": "Latitude 504.12 is outside the valid range -90 to 90. This may be a decimal-separator or copy-paste error.",
+          "4-2": "Longitude 181.22 is outside the valid range -180 to 180."
+        },
+        hint: "Think like a database constraint: uniqueness for IDs, valid numeric ranges for coordinates.",
+        lesson: {
+          principle: "Some errors require checking the whole column or known valid ranges.",
+          text: "A duplicate ID may only become visible when comparing rows. Coordinates and physical measurements should be checked against realistic bounds.",
+          code: "lat >= -90 && lat <= 90\nlon >= -180 && lon <= 180"
+        },
+        lookFor: ["Duplicate identifiers", "Out-of-range coordinates", "Swapped columns", "Values with missing decimal points"]
+      },
+      {
+        title: "The sneaky consistency check",
+        instruction: "The data have passed basic type checks. Now find cells that are logically inconsistent or suspicious in context.",
+        columns: ["record_id", "collected_on", "processed_on", "mass_g", "status"],
+        rows: [
+          ["R-301", "2026-04-02", "2026-04-03", "12.4", "processed"],
+          ["R-302", "2026-04-04", "2026-04-04", "0", "processed"],
+          ["R-303", "2026-04-06", "2026-04-05", "9.1", "processed"],
+          ["R-304", "2026-04-08", "2026-04-10", "11.8", "processed"],
+          ["R-305", "2026-04-09", "", "10.7", "processed"]
+        ],
+        answers: {
+          "1-3": "A mass of 0 may be possible in some datasets, but here a processed physical sample should have a positive mass or a documented reason.",
+          "2-2": "The sample was processed before it was collected, which is logically inconsistent.",
+          "4-2": "Status says processed, but processed_on is blank. These two fields disagree."
+        },
+        hint: "Every value has the right general type. Look for contradictions between columns.",
+        lesson: {
+          principle: "Cross-field rules catch errors that single-column checks miss.",
+          text: "Real validation often needs relationships between columns: processed_on should not precede collected_on, and a processed record should have processing metadata.",
+          code: "processed_on >= collected_on\nstatus !== 'processed' || processed_on"
+        },
+        lookFor: ["Contradictory dates", "Status/data mismatches", "Suspicious zeros", "Rules that span columns"]
+      }
+    ];
+
+    let currentRound = 0;
+    let score = 0;
+    let mistakes = 0;
+    let found = new Set();
+    let usedHints = new Set();
+
+    const el = id => document.getElementById(id);
+    const intro = el("intro");
+    const game = el("game");
+    const completion = el("completion");
+    const table = el("dataTable");
+    const feedback = el("feedback");
+    const nextBtn = el("nextBtn");
+    const hintBtn = el("hintBtn");
+    const lessonCard = el("lessonCard");
+
+    el("roundTotal").textContent = rounds.length;
+
+    function showToast(message) {
+      const toast = el("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.setTimeout(() => toast.classList.remove("show"), 1400);
+    }
+
+    function startGame() {
+      intro.classList.add("hidden");
+      completion.classList.remove("active");
+      game.classList.add("active");
+      currentRound = 0;
+      score = 0;
+      mistakes = 0;
+      usedHints = new Set();
+      renderRound();
+      updateStats();
+    }
+
+    function updateStats() {
+      el("roundNow").textContent = game.classList.contains("active") ? currentRound + 1 : 0;
+      el("score").textContent = score;
+      el("mistakes").textContent = mistakes;
+    }
+
+    function renderRound() {
+      const round = rounds[currentRound];
+      found = new Set();
+      el("roundKicker").textContent = `Round ${currentRound + 1}`;
+      el("roundTitle").textContent = round.title;
+      el("instruction").textContent = round.instruction;
+      el("targetCount").textContent = Object.keys(round.answers).length;
+      el("foundCount").textContent = "0";
+      el("progressBar").style.width = `${(currentRound / rounds.length) * 100}%`;
+      feedback.textContent = "Click a cell that looks wrong.";
+      feedback.className = "feedback";
+      nextBtn.disabled = true;
+      hintBtn.disabled = false;
+      lessonCard.classList.add("locked");
+      el("lessonPrinciple").textContent = "Finish this round to unlock the lesson.";
+      el("lessonText").textContent = "Each round introduces one recurring data-quality pattern.";
+      el("lessonCode").classList.add("hidden");
+      renderLookFor(round.lookFor);
+      renderTable(round);
+      updateStats();
+    }
+
+    function renderLookFor(items) {
+      const list = el("lookForList");
+      list.innerHTML = "";
+      items.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        list.appendChild(li);
+      });
+    }
+
+    function renderTable(round) {
+      table.innerHTML = "";
+      const thead = document.createElement("thead");
+      const headRow = document.createElement("tr");
+      round.columns.forEach(col => {
+        const th = document.createElement("th");
+        th.textContent = col;
+        headRow.appendChild(th);
+      });
+      thead.appendChild(headRow);
+      table.appendChild(thead);
+
+      const tbody = document.createElement("tbody");
+      round.rows.forEach((row, r) => {
+        const tr = document.createElement("tr");
+        row.forEach((value, c) => {
+          const td = document.createElement("td");
+          td.textContent = value === "" ? "⟨blank⟩" : value;
+          td.classList.add("clickable");
+          td.setAttribute("tabindex", "0");
+          td.setAttribute("role", "button");
+          td.setAttribute("aria-label", `Cell ${r + 1}, ${round.columns[c]}: ${value || "blank"}`);
+          td.dataset.key = `${r}-${c}`;
+          td.addEventListener("click", () => chooseCell(td));
+          td.addEventListener("keydown", event => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              chooseCell(td);
+            }
+          });
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+    }
+
+    function chooseCell(cell) {
+      const round = rounds[currentRound];
+      const key = cell.dataset.key;
+      if (found.has(key) || cell.classList.contains("correct")) return;
+
+      if (round.answers[key]) {
+        found.add(key);
+        cell.classList.remove("wrong");
+        cell.classList.add("correct");
+        cell.title = round.answers[key];
+        const bonus = usedHints.has(currentRound) ? 8 : 10;
+        score += bonus;
+        feedback.textContent = round.answers[key];
+        feedback.className = "feedback good";
+        el("foundCount").textContent = found.size;
+        updateStats();
+        if (found.size === Object.keys(round.answers).length) finishRound();
+      } else {
+        mistakes += 1;
+        score = Math.max(0, score - 2);
+        cell.classList.remove("wrong");
+        void cell.offsetWidth;
+        cell.classList.add("wrong");
+        feedback.textContent = "That cell is not one of the intended problems. Keep scanning the pattern of the column.";
+        feedback.className = "feedback bad";
+        updateStats();
+      }
+    }
+
+    function finishRound() {
+      const round = rounds[currentRound];
+      nextBtn.disabled = false;
+      hintBtn.disabled = true;
+      feedback.textContent = "Round complete. Read the lesson or continue.";
+      feedback.className = "feedback good";
+      el("progressBar").style.width = `${((currentRound + 1) / rounds.length) * 100}%`;
+      lessonCard.classList.remove("locked");
+      el("lessonPrinciple").textContent = round.lesson.principle;
+      el("lessonText").textContent = round.lesson.text;
+      el("lessonCode").textContent = round.lesson.code;
+      el("lessonCode").classList.remove("hidden");
+      if (currentRound === rounds.length - 1) {
+        nextBtn.textContent = "Finish";
+      } else {
+        nextBtn.textContent = "Next round";
+      }
+    }
+
+    function nextRound() {
+      if (currentRound < rounds.length - 1) {
+        currentRound += 1;
+        renderRound();
+      } else {
+        finishGame();
+      }
+    }
+
+    function finishGame() {
+      game.classList.remove("active");
+      completion.classList.add("active");
+      el("roundNow").textContent = rounds.length;
+      const previousBest = Number(localStorage.getItem("dataDetectiveBest") || "0");
+      if (score > previousBest) {
+        localStorage.setItem("dataDetectiveBest", String(score));
+        showToast("New best score: " + score);
+      }
+    }
+
+    function showHint() {
+      const round = rounds[currentRound];
+      usedHints.add(currentRound);
+      feedback.textContent = round.hint;
+      feedback.className = "feedback";
+    }
+
+    function copyLessonIdeas() {
+      const text = rounds.map((round, idx) => {
+        return `${idx + 1}. ${round.title}\nPrinciple: ${round.lesson.principle}\nExample problems: ${Object.values(round.answers).join(" ")}`;
+      }).join("\n\n");
+      navigator.clipboard.writeText(text).then(
+        () => showToast("Copied lesson ideas"),
+        () => showToast("Copy failed")
+      );
+    }
+
+    el("startBtn").addEventListener("click", startGame);
+    el("restartBtn").addEventListener("click", startGame);
+    el("nextBtn").addEventListener("click", nextRound);
+    el("hintBtn").addEventListener("click", showHint);
+    el("copyBtn").addEventListener("click", copyLessonIdeas);
+    el("skipIntroBtn").addEventListener("click", () => {
+      localStorage.setItem("dataDetectiveSkipIntro", "yes");
+      showToast("Intro will be skipped on this device");
+    });
+
+    if (localStorage.getItem("dataDetectiveSkipIntro") === "yes") {
+      startGame();
+    }
+  </script>
+</body>
+</html>
+
