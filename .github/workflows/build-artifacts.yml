@@ -46,3 +46,36 @@ jobs:
             dist/SHA256SUMS.txt
           if-no-files-found: error
           retention-days: 30
+
+  release:
+    name: Publish latest H5P downloads
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download validated packages
+        uses: actions/download-artifact@v8
+        with:
+          name: hescor-h5p-packages
+          path: dist
+
+      - name: Verify checksums
+        working-directory: dist
+        run: sha256sum --check SHA256SUMS.txt
+
+      - name: Publish rolling release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          release_notes="Automatically generated from the latest master commit: https://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
+          if gh release view h5p-latest --repo "${GITHUB_REPOSITORY}" > /dev/null 2>&1; then
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/git/refs/tags/h5p-latest" -f sha="${GITHUB_SHA}" -F force=true
+            gh release upload h5p-latest dist/*.h5p dist/SHA256SUMS.txt --clobber --repo "${GITHUB_REPOSITORY}"
+            gh release edit h5p-latest --title "Latest H5P packages" --notes "${release_notes}" --latest --repo "${GITHUB_REPOSITORY}"
+          else
+            gh release create h5p-latest dist/*.h5p dist/SHA256SUMS.txt --target "${GITHUB_SHA}" --title "Latest H5P packages" --notes "${release_notes}" --latest --repo "${GITHUB_REPOSITORY}"
+          fi

@@ -7,6 +7,17 @@ Two browser games for learning basic data literacy:
 
 Play the combined website at [roink.github.io/data-detective](https://roink.github.io/data-detective/).
 
+## Download H5P packages
+
+The latest validated packages are published as permanent GitHub Release downloads:
+
+- [Combined HESCOR Data Learning Lab](https://github.com/roink/data-detective/releases/latest/download/hescor-data-learning-lab.h5p)
+- [Data Detective only](https://github.com/roink/data-detective/releases/latest/download/data-detective.h5p)
+- [Type Sorter only](https://github.com/roink/data-detective/releases/latest/download/type-sorter.h5p)
+- [SHA-256 checksums](https://github.com/roink/data-detective/releases/latest/download/SHA256SUMS.txt)
+
+See the [latest release](https://github.com/roink/data-detective/releases/latest) for all downloads in one place.
+
 ## Project structure
 
 The root `index.html` and `assets/` directory are the canonical application. The H5P packages are generated from them.
@@ -32,7 +43,7 @@ npm run build
 npm run check
 ```
 
-The same check runs in GitHub Actions for pushes to `master`, pull requests, and manual workflow runs. Successful runs provide a downloadable `hescor-h5p-packages` artifact containing all three H5P files and their SHA-256 checksums. Workflow artifacts are retained for 30 days.
+The same check runs in GitHub Actions for pushes to `master`, pull requests, and manual workflow runs. Successful runs provide a downloadable `hescor-h5p-packages` workflow artifact retained for 30 days. Pushes to `master` also update the permanent `Latest H5P packages` release linked above.
 
 The deployment outputs are:
 
