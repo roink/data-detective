@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Data Detective: Spot the Dirty Data</title>
+  <title>HESCOR Data Learning Lab</title>
+  <link rel="icon" href="assets/hescor_logo.svg" type="image/svg+xml" />
   <style>
     :root {
       --bg: #f7f8fb;
@@ -447,88 +448,403 @@
       .side { position: static; }
       .badge-grid { grid-template-columns: 1fr; }
     }
+
+    /* HESCOR visual system */
+    :root {
+      --bg: #f5f8f9;
+      --card: #ffffff;
+      --ink: #122f3c;
+      --muted: #526b76;
+      --line: #cbe3e9;
+      --accent: #ea574f;
+      --accent-soft: #fff0ee;
+      --blue: #005176;
+      --cyan: #009ec4;
+      --cyan-soft: #cbecf5;
+      --good: #25713f;
+      --good-soft: #edf8f0;
+      --bad: #a8322d;
+      --bad-soft: #fff0ee;
+      --shadow: 0 18px 45px rgba(0, 81, 118, .10);
+      --radius: 4px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Albert Sans", "Avenir Next", Avenir, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    button, input { font: inherit; }
+    button { border-radius: 2px; background: var(--accent); box-shadow: none; }
+    button:hover { box-shadow: 0 6px 0 rgba(234, 87, 79, .15); }
+    button:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+    .secondary { background: white; color: var(--blue); border-color: #8ebdcc; }
+    .card { border-color: var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .hidden { display: none !important; }
+
+    .site-header {
+      position: relative;
+      display: block;
+      min-height: 0;
+      margin: 0;
+      padding: 0;
+      color: white;
+      overflow: hidden;
+      background:
+        linear-gradient(115deg, rgba(0, 81, 118, .98), rgba(0, 81, 118, .88)),
+        repeating-linear-gradient(120deg, transparent 0 48px, rgba(255,255,255,.05) 49px 51px);
+    }
+    .site-header::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      bottom: -150px;
+      width: 430px;
+      height: 430px;
+      border: 55px solid rgba(203, 236, 245, .12);
+      border-radius: 50%;
+      box-shadow: 0 0 0 55px rgba(203, 236, 245, .05);
+    }
+    .nav-shell, .hero-shell, .page, .brand-footer__inner {
+      width: min(1240px, calc(100vw - 40px));
+      margin-inline: auto;
+    }
+    .nav-shell {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      padding: 25px 0 42px;
+    }
+    .hescor-mark { width: 178px; height: auto; display: block; }
+    .site-link { color: white; text-decoration: none; font-weight: 700; font-size: .9rem; }
+    .site-link:hover { color: #ffaca7; }
+    .hero-shell { position: relative; z-index: 1; padding: 25px 0 42px; }
+    .eyebrow { margin: 0 0 8px; color: #9ee3f2; text-transform: uppercase; letter-spacing: .12em; font-size: .77rem; font-weight: 900; }
+    .site-header h1 { max-width: 760px; margin: 0 0 10px; color: white; font-size: clamp(2.1rem, 5vw, 4.2rem); line-height: .98; letter-spacing: -.045em; }
+    .site-header .subtitle { max-width: 720px; color: #e6f5f8; font-size: 1.04rem; line-height: 1.55; }
+
+    .game-switcher {
+      position: relative;
+      z-index: 3;
+      width: min(1240px, calc(100vw - 40px));
+      margin: -22px auto 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: white;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .game-tab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 64px;
+      padding: 12px 18px;
+      background: white;
+      border: 0;
+      border-bottom: 5px solid transparent;
+      color: var(--blue);
+      font-weight: 850;
+      box-shadow: none;
+    }
+    .game-tab + .game-tab { border-left: 1px solid var(--line); }
+    .game-tab[aria-selected="true"] { border-bottom-color: var(--accent); color: var(--accent); }
+    .game-tab:hover { transform: none; background: #f8fcfd; box-shadow: none; }
+    .tab-number { display: grid; place-items: center; width: 28px; height: 28px; background: var(--cyan-soft); color: var(--blue); border-radius: 50%; font-size: .82rem; }
+
+    .page { padding: 34px 0 54px; }
+    .game-view[hidden] { display: none; }
+    .game-intro { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 20px; }
+    .game-intro h2 { margin: 0 0 6px; color: var(--blue); font-size: clamp(1.65rem, 3vw, 2.5rem); line-height: 1.1; }
+    .game-intro p { margin: 0; color: var(--muted); max-width: 680px; line-height: 1.5; }
+    .stats { flex-shrink: 0; }
+    .pill { border-radius: 2px; border-color: var(--line); color: var(--blue); background: white; }
+    .layout { grid-template-columns: minmax(0, 1fr) 315px; gap: 20px; }
+    .round-head { border-top: 6px solid var(--accent); padding: 22px 24px 17px; }
+    .round-kicker, .table-label { color: var(--accent); }
+    .round-head h2 { color: var(--blue); }
+    .progress-wrap { background: var(--cyan-soft); border-radius: 0; }
+    .progress-bar { background: var(--cyan); border-radius: 0; }
+    th { color: var(--blue); background: #e9f5f8; }
+    td.clickable:hover { background: #f1fafc; outline-color: var(--cyan-soft); }
+    .game-footer { background: #fbfdfe; }
+    .lesson { border-left-color: var(--accent); background: #fffafa; }
+    .side-card h3 { color: var(--cyan); text-transform: uppercase; letter-spacing: .04em; }
+    .side-card ul { list-style: none; padding: 0; }
+    .side-card li { position: relative; padding-left: 21px; margin: 7px 0; }
+    .side-card li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-weight: 900; }
+    .mini-code { border-radius: 2px; background: var(--blue); }
+    .completion { border-top: 7px solid var(--accent); }
+    .completion h2 { color: var(--blue); }
+
+    .type-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start; }
+    .type-board { overflow: visible; border-top: 6px solid var(--accent); }
+    .type-head { padding: 22px 24px 18px; border-bottom: 1px solid var(--line); }
+    .type-headline { display: flex; justify-content: space-between; gap: 18px; align-items: start; }
+    .type-head h3 { margin: 3px 0 6px; color: var(--blue); font-size: clamp(1.35rem, 2.4vw, 2rem); text-transform: none; }
+    .type-head p { color: var(--muted); margin: 0; max-width: 670px; }
+    .type-workspace { padding: 20px 22px 24px; }
+    .sort-instruction { margin: 0 0 12px; color: var(--muted); font-size: .92rem; }
+    .variable-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; min-height: 96px; }
+    .variable-card {
+      position: relative;
+      min-height: 94px;
+      padding: 14px 14px 12px;
+      border: 2px solid #a9d1dc;
+      border-top: 5px solid var(--cyan);
+      background: white;
+      color: var(--ink);
+      text-align: left;
+      box-shadow: 0 5px 12px rgba(0, 81, 118, .06);
+      cursor: grab;
+    }
+    .variable-card:hover, .variable-card.selected { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 7px 0 var(--accent-soft); }
+    .variable-card.selected::after { content: "Selected"; position: absolute; top: 8px; right: 8px; color: var(--accent); font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; }
+    .variable-card strong { display: block; color: var(--blue); line-height: 1.2; margin-bottom: 5px; padding-right: 42px; }
+    .variable-card small { color: var(--muted); line-height: 1.3; }
+    .type-bins { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+    .type-bin { min-height: 126px; padding: 12px; border: 2px dashed #8ebdcc; background: #f6fbfc; cursor: pointer; transition: .15s ease; }
+    .type-bin:hover, .type-bin.dragover { border-color: var(--accent); background: var(--accent-soft); }
+    .type-bin h4 { margin: 0 0 2px; color: var(--blue); font-size: 1rem; }
+    .type-bin p { margin: 0; color: var(--muted); font-size: .78rem; line-height: 1.25; }
+    .bin-count { display: inline-block; margin-top: 13px; color: var(--cyan); font-size: .78rem; font-weight: 800; }
+    .type-feedback { min-height: 76px; margin-top: 18px; padding: 14px 16px; border-left: 5px solid var(--cyan); background: var(--cyan-soft); line-height: 1.45; }
+    .type-feedback.good { border-color: var(--good); background: var(--good-soft); }
+    .type-feedback.bad { border-color: var(--accent); background: var(--accent-soft); }
+    .type-feedback strong { color: var(--blue); }
+    .type-actions { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-top: 16px; }
+    .type-progress { color: var(--muted); font-size: .9rem; font-weight: 700; }
+    .sorted-list { display: grid; gap: 7px; margin-top: 12px; }
+    .sorted-chip { padding: 8px 9px; background: white; border-left: 4px solid var(--good); color: var(--blue); font-size: .8rem; font-weight: 750; }
+    .concept-card { position: sticky; top: 18px; padding: 20px; border-top: 6px solid var(--cyan); }
+    .concept-card h3 { color: var(--cyan); text-transform: uppercase; font-size: 1.05rem; letter-spacing: .04em; }
+    .concept-card dl { margin: 0; }
+    .concept-card dt { margin-top: 13px; color: var(--blue); font-weight: 850; }
+    .concept-card dd { margin: 2px 0 0; color: var(--muted); font-size: .88rem; line-height: 1.4; }
+    .type-completion { padding: 32px; text-align: center; border-top: 7px solid var(--accent); }
+    .type-completion h3 { color: var(--blue); font-size: clamp(1.8rem, 4vw, 3rem); text-transform: none; margin-bottom: 10px; }
+    .type-completion p { max-width: 690px; margin: 0 auto 20px; color: var(--muted); }
+
+    .brand-footer { background: white; border-top: 10px solid #e9eeee; }
+    .brand-footer__inner { padding: 34px 0 26px; }
+    .funders { display: flex; justify-content: space-between; align-items: center; gap: 38px; }
+    .funders-copy { max-width: 430px; }
+    .funders-copy strong { display: block; color: var(--blue); font-size: 1.1rem; }
+    .funders-copy span { color: var(--muted); }
+    .logo-row { display: flex; align-items: center; justify-content: flex-end; gap: 38px; }
+    .ministry-logo { width: min(270px, 40vw); height: auto; }
+    .uni-logo { width: min(160px, 25vw); height: auto; }
+    .copyright { margin-top: 28px; padding-top: 18px; border-top: 1px solid #aac8d2; color: var(--muted); font-size: .84rem; }
+
+    @media (max-width: 900px) {
+      .site-header { min-height: 0; }
+      .game-intro { align-items: flex-start; flex-direction: column; }
+      .layout, .type-layout { grid-template-columns: 1fr; }
+      .concept-card { position: static; }
+      .variable-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .type-bins { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .funders { align-items: flex-start; flex-direction: column; }
+      .logo-row { justify-content: flex-start; }
+    }
+    @media (max-width: 560px) {
+      .nav-shell, .hero-shell, .page, .brand-footer__inner, .game-switcher { width: min(100% - 24px, 1240px); }
+      .nav-shell { padding-top: 18px; }
+      .hescor-mark { width: 145px; }
+      .site-link { font-size: .78rem; }
+      .game-switcher { grid-template-columns: 1fr; }
+      .game-tab { min-height: 54px; justify-content: flex-start; }
+      .game-tab + .game-tab { border-left: 0; border-top: 1px solid var(--line); }
+      .game-intro .stats { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; }
+      .pill { text-align: center; padding: 7px 8px; }
+      .round-head, .type-head, .type-workspace { padding-left: 15px; padding-right: 15px; }
+      .round-title-row, .type-headline { flex-direction: column; }
+      .variable-cards { grid-template-columns: 1fr; }
+      .type-bins { grid-template-columns: 1fr 1fr; }
+      .type-bin { min-height: 110px; }
+      .logo-row { align-items: flex-start; flex-direction: column; gap: 24px; }
+      .ministry-logo { width: 270px; max-width: 100%; }
+      .uni-logo { width: 145px; max-width: 100%; }
+    }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true">D</div>
+  <header class="site-header">
+    <div class="nav-shell">
+      <a href="https://www.hescor-project.com/" aria-label="HESCOR project website">
+        <img class="hescor-mark" src="assets/hescor_logo.svg" alt="HESCOR">
+      </a>
+      <a class="site-link" href="https://www.hescor-project.com/">Visit hescor-project.com&nbsp; →</a>
+    </div>
+  </header>
+
+  <nav class="game-switcher" aria-label="Choose a learning game" role="tablist">
+    <button class="game-tab" id="detectiveTab" role="tab" aria-controls="detectiveView" aria-selected="true">
+      <span class="tab-number">01</span> Data Detective
+    </button>
+    <button class="game-tab" id="typesTab" role="tab" aria-controls="typesView" aria-selected="false">
+      <span class="tab-number">02</span> Type Sorter
+    </button>
+  </nav>
+
+  <main class="page">
+    <section id="detectiveView" class="game-view" role="tabpanel" aria-labelledby="detectiveTab">
+      <div class="game-intro">
         <div>
-          <h1>Data Detective</h1>
-          <p class="subtitle">A tiny data-cleaning game for tables, typos, units, dates, and suspicious values.</p>
+          <p class="eyebrow" style="color:var(--accent)">Spot the dirty data</p>
+          <h2>Data Detective</h2>
+          <p>Inspect realistic tables, find suspicious cells, and learn the validation rule that catches each problem.</p>
+        </div>
+        <div class="stats" aria-live="polite">
+          <div class="pill">Round <span id="roundNow">0</span>/<span id="roundTotal">0</span></div>
+          <div class="pill">Score <span id="score">0</span></div>
+          <div class="pill">Mistakes <span id="mistakes">0</span></div>
         </div>
       </div>
-      <div class="stats" aria-live="polite">
-        <div class="pill">Round <span id="roundNow">0</span>/<span id="roundTotal">0</span></div>
-        <div class="pill">Score <span id="score">0</span></div>
-        <div class="pill">Mistakes <span id="mistakes">0</span></div>
+
+      <div class="layout">
+        <section>
+          <div id="game" class="card game-card" aria-live="polite">
+            <div class="round-head">
+              <div class="round-kicker" id="roundKicker">Round</div>
+              <div class="round-title-row">
+                <h2 id="roundTitle"></h2>
+                <div class="pill"><span id="foundCount">0</span>/<span id="targetCount">0</span> found</div>
+              </div>
+              <p class="instruction" id="instruction"></p>
+              <div class="progress-wrap" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
+            </div>
+            <div class="table-wrap">
+              <span class="table-label">Table to inspect</span>
+              <table id="dataTable"></table>
+            </div>
+            <div id="referenceWrap" class="table-wrap hidden">
+              <span id="referenceTitle" class="table-label"></span>
+              <table id="referenceTable"></table>
+            </div>
+            <div class="game-footer">
+              <div id="feedback" class="feedback">Click a cell that looks wrong.</div>
+              <div class="button-row">
+                <button id="hintBtn" class="secondary">Hint</button>
+                <button id="nextBtn" disabled>Next round</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="completion" class="card completion">
+            <h2>Clean data unlocked.</h2>
+            <p>You found the kinds of small inconsistencies that often cost hours later: mixed units, text in numeric fields, date ambiguity, controlled-vocabulary drift, duplicate IDs, and impossible values.</p>
+            <div class="badge-grid">
+              <div class="badge"><strong>Type consistency</strong><span>Numbers should be numbers, dates should be dates, codes should be codes.</span></div>
+              <div class="badge"><strong>Explicit units</strong><span>Store units in metadata or column names, not mixed into individual cells.</span></div>
+              <div class="badge"><strong>Validation rules</strong><span>Ranges, uniqueness, and controlled vocabularies catch many errors early.</span></div>
+            </div>
+            <div class="button-row" style="justify-content:center">
+              <button id="restartBtn">Play again</button>
+              <button id="copyBtn" class="secondary">Copy lesson ideas</button>
+            </div>
+          </div>
+        </section>
+
+        <aside class="side">
+          <div class="card side-card">
+            <h3>What to look for</h3>
+            <ul id="lookForList">
+              <li>Unexpected text in numeric columns</li>
+              <li>Mixed decimal separators</li>
+              <li>Units inside cells</li>
+              <li>Dates that are ambiguous or impossible</li>
+            </ul>
+          </div>
+          <div id="lessonCard" class="card side-card lesson locked">
+            <h3>Round lesson</h3>
+            <p class="principle" id="lessonPrinciple">Finish a round to unlock the lesson.</p>
+            <p id="lessonText">Good data management is partly about making invalid entries hard to enter in the first place.</p>
+            <div id="lessonCode" class="mini-code hidden"></div>
+          </div>
+        </aside>
       </div>
-    </header>
+    </section>
 
-    <main class="layout">
-      <section>
-        <div id="game" class="card game-card" aria-live="polite">
-          <div class="round-head">
-            <div class="round-kicker" id="roundKicker">Round</div>
-            <div class="round-title-row">
-              <h2 id="roundTitle"></h2>
-              <div class="pill"><span id="foundCount">0</span>/<span id="targetCount">0</span> found</div>
+    <section id="typesView" class="game-view" role="tabpanel" aria-labelledby="typesTab" hidden>
+      <div class="game-intro">
+        <div>
+          <p class="eyebrow" style="color:var(--accent)">Classify the variables</p>
+          <h2>Type Sorter</h2>
+          <p>Sort variable cards by how they behave—not by what their values happen to look like. Later rounds introduce real-world ambiguity.</p>
+        </div>
+        <div class="stats" aria-live="polite">
+          <div class="pill">Level <span id="typeRoundNow">1</span>/<span id="typeRoundTotal">5</span></div>
+          <div class="pill">Score <span id="typeScore">0</span></div>
+          <div class="pill">Streak <span id="typeStreak">0</span></div>
+        </div>
+      </div>
+
+      <div id="typeGame" class="type-layout">
+        <section class="card type-board">
+          <div class="type-head">
+            <div class="round-kicker" id="typeKicker">Level 1 · The basics</div>
+            <div class="type-headline">
+              <div>
+                <h3 id="typeTitle">Start with clear cases</h3>
+                <p id="typeInstruction">Select a variable card, then choose its best type. You can also drag cards into a box.</p>
+              </div>
+              <div class="pill"><span id="typeSorted">0</span>/<span id="typeTarget">0</span> sorted</div>
             </div>
-            <p class="instruction" id="instruction"></p>
-            <div class="progress-wrap" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
           </div>
-          <div class="table-wrap">
-            <span class="table-label">Table to inspect</span>
-            <table id="dataTable"></table>
-          </div>
-          <div id="referenceWrap" class="table-wrap hidden">
-            <span id="referenceTitle" class="table-label"></span>
-            <table id="referenceTable"></table>
-          </div>
-          <div class="game-footer">
-            <div id="feedback" class="feedback">Click a cell that looks wrong.</div>
-            <div class="button-row">
-              <button id="hintBtn" class="secondary">Hint</button>
-              <button id="nextBtn" disabled>Next round</button>
+          <div class="type-workspace">
+            <p class="sort-instruction">Choose a card, then a type ↓</p>
+            <div id="variableCards" class="variable-cards" aria-label="Variables to classify"></div>
+            <div id="typeBins" class="type-bins" aria-label="Data type choices"></div>
+            <div id="typeFeedback" class="type-feedback" role="status" aria-live="polite"><strong>Ready?</strong> Pick any card to begin.</div>
+            <div class="type-actions">
+              <span class="type-progress" id="typeProgress">Five levels build from clear examples to ambiguous research data.</span>
+              <button id="typeNextBtn" disabled>Next level</button>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div id="completion" class="card completion">
-          <h2>Clean data unlocked.</h2>
-          <p>You found the kinds of small inconsistencies that often cost hours later: mixed units, text in numeric fields, date ambiguity, controlled-vocabulary drift, duplicate IDs, and impossible values.</p>
-          <div class="badge-grid">
-            <div class="badge"><strong>Type consistency</strong><span>Numbers should be numbers, dates should be dates, codes should be codes.</span></div>
-            <div class="badge"><strong>Explicit units</strong><span>Store units in metadata or column names, not mixed into individual cells.</span></div>
-            <div class="badge"><strong>Validation rules</strong><span>Ranges, uniqueness, and controlled vocabularies catch many errors early.</span></div>
-          </div>
-          <div class="button-row" style="justify-content:center">
-            <button id="restartBtn">Play again</button>
-            <button id="copyBtn" class="secondary">Copy lesson ideas</button>
-          </div>
-        </div>
-      </section>
+        <aside class="card concept-card">
+          <h3>Type guide</h3>
+          <dl>
+            <dt>Binary</dt><dd>Exactly two states, such as yes/no or present/absent.</dd>
+            <dt>Categorical</dt><dd>Labels with no meaningful ranking, such as a country or species.</dd>
+            <dt>Ordinal</dt><dd>Ordered categories whose gaps are not necessarily equal.</dd>
+            <dt>Numerical</dt><dd>Counts or measurements where arithmetic is meaningful.</dd>
+          </dl>
+        </aside>
+      </div>
 
-      <aside class="side">
-        <div class="card side-card">
-          <h3>What to look for</h3>
-          <ul id="lookForList">
-            <li>Unexpected text in numeric columns</li>
-            <li>Mixed decimal separators</li>
-            <li>Units inside cells</li>
-            <li>Dates that are ambiguous or impossible</li>
-          </ul>
+      <div id="typeCompletion" class="card type-completion hidden">
+        <p class="eyebrow" style="color:var(--accent)">Classification complete</p>
+        <h3>You found the meaning behind the values.</h3>
+        <p>A data type describes how a variable behaves in analysis. That determines which summaries, visualisations, and models make sense.</p>
+        <div class="badge-grid">
+          <div class="badge"><strong>Labels ≠ numbers</strong><span>IDs and ZIP codes may contain digits, but arithmetic on them is meaningless.</span></div>
+          <div class="badge"><strong>Order ≠ equal distance</strong><span>Ratings can be ranked without assuming each step is equally large.</span></div>
+          <div class="badge"><strong>Context matters</strong><span>The best classification depends on what the variable represents and how it will be analysed.</span></div>
         </div>
-        <div id="lessonCard" class="card side-card lesson locked">
-          <h3>Round lesson</h3>
-          <p class="principle" id="lessonPrinciple">Finish a round to unlock the lesson.</p>
-          <p id="lessonText">Good data management is partly about making invalid entries hard to enter in the first place.</p>
-          <div id="lessonCode" class="mini-code hidden"></div>
+        <button id="typeRestartBtn">Play again</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="brand-footer">
+    <div class="brand-footer__inner">
+      <div class="funders">
+        <div class="funders-copy"><strong>HESCOR educational resources</strong><span>Human &amp; Earth System Coupled Research at the University of Cologne.</span></div>
+        <div class="logo-row">
+          <div><span class="eyebrow" style="display:block;color:var(--muted)">Funded by</span><img class="ministry-logo" src="assets/logo_ministerium.jpg" alt="Ministry of Culture and Science of the State of North Rhine-Westphalia"></div>
+          <img class="uni-logo" src="assets/logo_uni-koeln.jpg" alt="University of Cologne">
         </div>
-      </aside>
-    </main>
-  </div>
+      </div>
+      <div class="copyright">© University of Cologne <span id="copyrightYear"></span> · HESCOR Project</div>
+    </div>
+  </footer>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
@@ -1067,11 +1383,250 @@
       );
     }
 
+    const typeNames = {
+      binary: ["Binary", "Exactly two possible states"],
+      categorical: ["Categorical", "Unordered labels or identifiers"],
+      ordinal: ["Ordinal", "Categories with a meaningful order"],
+      numerical: ["Numerical", "Counts or measured quantities"]
+    };
+
+    const typeRounds = [
+      {
+        kicker: "Level 1 · The basics",
+        title: "Start with clear cases",
+        instruction: "Classify each variable by what it represents. The examples in this level have one clear best answer.",
+        cards: [
+          { name: "Has given consent", example: "yes / no", type: "binary", why: "There are exactly two possible states: consent was given or it was not." },
+          { name: "Favorite color", example: "blue, red, green…", type: "categorical", why: "Colors are labels without a natural ranking." },
+          { name: "Pain level", example: "none, mild, moderate, severe", type: "ordinal", why: "The categories have a meaningful order, but their distances are not guaranteed to be equal." },
+          { name: "Age in years", example: "21, 38, 67…", type: "numerical", why: "Age is a measured quantity, so differences and averages are meaningful." },
+          { name: "Test result", example: "positive / negative", type: "binary", why: "This variable records one of two defined outcomes." },
+          { name: "Country", example: "Germany, Kenya, Peru…", type: "categorical", why: "Country names are unordered labels." }
+        ]
+      },
+      {
+        kicker: "Level 2 · Order matters",
+        title: "Nominal or ordinal?",
+        instruction: "Look for categories that can be ranked. An order alone does not make arithmetic meaningful.",
+        cards: [
+          { name: "Education level", example: "school, bachelor, master, PhD", type: "ordinal", why: "The levels follow a meaningful educational progression, even though the steps are not equal." },
+          { name: "Blood type", example: "A, B, AB, O", type: "categorical", why: "Blood types are names, not ranks; AB is not ‘more’ than A." },
+          { name: "T-shirt size", example: "XS, S, M, L, XL", type: "ordinal", why: "Sizes have a clear order, but the physical step between labels may vary." },
+          { name: "Animal species", example: "fox, hare, wolf…", type: "categorical", why: "Species are distinct labels with no inherent order." },
+          { name: "Race position", example: "1st, 2nd, 3rd…", type: "ordinal", why: "A rank tells us order, not that first place was twice as good as second." },
+          { name: "Number of observations", example: "0, 1, 2, 3…", type: "numerical", why: "This is a count. Addition, differences, and an average can all be meaningful." }
+        ]
+      },
+      {
+        kicker: "Level 3 · Looks can deceive",
+        title: "Numbers are not always numerical",
+        instruction: "Classify the meaning of the variable, not the characters used to encode it.",
+        cards: [
+          { name: "Patient ID", example: "10042, 10043, 10044", type: "categorical", why: "The digits are identifiers. Their average or distance has no useful meaning." },
+          { name: "ZIP code", example: "50667, 10115…", type: "categorical", why: "A ZIP code names an area; arithmetic on the code would be meaningless." },
+          { name: "Football jersey number", example: "7, 10, 23…", type: "categorical", why: "The number identifies a player; a larger jersey number does not mean more of anything." },
+          { name: "Temperature in °C", example: "−2.1, 12.4, 24.8", type: "numerical", why: "Temperature is measured numerically. Differences are meaningful, although 20 °C is not twice as hot as 10 °C." },
+          { name: "Number of children", example: "0, 1, 2, 3…", type: "numerical", why: "This is a count with a meaningful zero and meaningful arithmetic." },
+          { name: "Satisfaction stars", example: "1 ★ to 5 ★", type: "ordinal", why: "Stars express an order, but the perceived gap from 1 to 2 may differ from 4 to 5." }
+        ]
+      },
+      {
+        kicker: "Level 4 · Research context",
+        title: "Choose the best type for analysis",
+        instruction: "These are common research variables. Pick the most defensible default classification.",
+        cards: [
+          { name: "Conservation status", example: "least concern → critically endangered", type: "ordinal", why: "The categories encode increasing threat. For many analyses, preserving that order is important." },
+          { name: "Excavation area code", example: "A01, A02, B01…", type: "categorical", why: "The code identifies an area; its letters and digits do not define a quantity." },
+          { name: "Artefact present", example: "present / absent", type: "binary", why: "Presence is recorded as one of two states." },
+          { name: "Time at enclosure", example: "minutes", type: "numerical", why: "Duration is a measured quantity with meaningful differences and a meaningful zero." },
+          { name: "Sediment grain class", example: "clay, silt, sand, gravel", type: "ordinal", why: "These classes follow increasing grain size, though each label represents a range rather than one number." },
+          { name: "Enclosure type", example: "open, indoor, mixed…", type: "categorical", why: "The enclosure types are labels with no single natural ranking." }
+        ]
+      },
+      {
+        kicker: "Level 5 · Ambiguous by design",
+        title: "Make the modelling choice explicit",
+        instruction: "Some variables admit several encodings. Choose the best general answer and read why context still matters.",
+        cards: [
+          { name: "Month name", example: "January, February…", type: "ordinal", why: "Months have an order, so ordinal is the best option here. In seasonal analysis they are cyclical too: December and January are adjacent." },
+          { name: "Year of birth", example: "1984, 1999, 2006…", type: "numerical", why: "Differences between years are meaningful. It is interval-like: year zero is conventional, so ratios are not meaningful." },
+          { name: "Agreement scale", example: "strongly disagree → strongly agree", type: "ordinal", why: "Responses are ordered, but equal spacing between opinions should not be assumed automatically." },
+          { name: "Weekday", example: "Monday, Tuesday…", type: "categorical", why: "For a general analysis, weekdays are recurring labels. They can also be modelled cyclically when sequence matters." },
+          { name: "Treatment assigned", example: "treatment / control", type: "binary", why: "This design has exactly two study groups, making the assignment binary." },
+          { name: "Income in euros", example: "32,000; 41,000; 55,000", type: "numerical", why: "Income is a quantity for which differences, sums, and ratios can be meaningful." }
+        ]
+      }
+    ];
+
+    let typeRound = 0;
+    let typeScore = 0;
+    let typeStreak = 0;
+    let selectedTypeCard = null;
+    let sortedTypeCards = new Set();
+
+    function setGameView(view) {
+      const isDetective = view === "detective";
+      el("detectiveView").hidden = !isDetective;
+      el("typesView").hidden = isDetective;
+      el("detectiveTab").setAttribute("aria-selected", String(isDetective));
+      el("typesTab").setAttribute("aria-selected", String(!isDetective));
+      history.replaceState(null, "", isDetective ? "#data-detective" : "#type-sorter");
+    }
+
+    function startTypeGame() {
+      typeRound = 0;
+      typeScore = 0;
+      typeStreak = 0;
+      el("typeGame").classList.remove("hidden");
+      el("typeCompletion").classList.add("hidden");
+      renderTypeRound();
+    }
+
+    function updateTypeStats() {
+      el("typeRoundNow").textContent = typeRound + 1;
+      el("typeRoundTotal").textContent = typeRounds.length;
+      el("typeScore").textContent = typeScore;
+      el("typeStreak").textContent = typeStreak;
+    }
+
+    function renderTypeRound() {
+      const round = typeRounds[typeRound];
+      selectedTypeCard = null;
+      sortedTypeCards = new Set();
+      el("typeKicker").textContent = round.kicker;
+      el("typeTitle").textContent = round.title;
+      el("typeInstruction").textContent = round.instruction;
+      el("typeSorted").textContent = "0";
+      el("typeTarget").textContent = round.cards.length;
+      el("typeFeedback").className = "type-feedback";
+      el("typeFeedback").innerHTML = "<strong>Ready?</strong> Pick any card to begin.";
+      el("typeNextBtn").disabled = true;
+      el("typeNextBtn").textContent = typeRound === typeRounds.length - 1 ? "See results" : "Next level";
+      el("typeProgress").textContent = `Level ${typeRound + 1} of ${typeRounds.length} · ${round.cards.length} variables`;
+      renderTypeCards();
+      renderTypeBins();
+      updateTypeStats();
+    }
+
+    function renderTypeCards() {
+      const container = el("variableCards");
+      container.innerHTML = "";
+      typeRounds[typeRound].cards.forEach((card, index) => {
+        if (sortedTypeCards.has(index)) return;
+        const button = document.createElement("button");
+        button.className = "variable-card";
+        button.type = "button";
+        button.draggable = true;
+        button.dataset.index = index;
+        button.setAttribute("aria-pressed", String(selectedTypeCard === index));
+        button.innerHTML = `<strong>${card.name}</strong><small>${card.example}</small>`;
+        if (selectedTypeCard === index) button.classList.add("selected");
+        button.addEventListener("click", () => selectTypeCard(index));
+        button.addEventListener("dragstart", event => {
+          selectedTypeCard = index;
+          event.dataTransfer.setData("text/plain", String(index));
+          event.dataTransfer.effectAllowed = "move";
+        });
+        container.appendChild(button);
+      });
+    }
+
+    function renderTypeBins() {
+      const container = el("typeBins");
+      container.innerHTML = "";
+      Object.entries(typeNames).forEach(([key, value]) => {
+        const bin = document.createElement("div");
+        bin.className = "type-bin";
+        bin.tabIndex = 0;
+        bin.setAttribute("role", "button");
+        bin.setAttribute("aria-label", `Classify selected variable as ${value[0]}`);
+        const matches = [...sortedTypeCards].filter(index => typeRounds[typeRound].cards[index].type === key);
+        bin.innerHTML = `<h4>${value[0]}</h4><p>${value[1]}</p><span class="bin-count">${matches.length} placed</span><div class="sorted-list">${matches.map(index => `<div class="sorted-chip">${typeRounds[typeRound].cards[index].name}</div>`).join("")}</div>`;
+        bin.addEventListener("click", () => classifyTypeCard(key));
+        bin.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            classifyTypeCard(key);
+          }
+        });
+        bin.addEventListener("dragover", event => { event.preventDefault(); bin.classList.add("dragover"); });
+        bin.addEventListener("dragleave", () => bin.classList.remove("dragover"));
+        bin.addEventListener("drop", event => {
+          event.preventDefault();
+          bin.classList.remove("dragover");
+          selectedTypeCard = Number(event.dataTransfer.getData("text/plain"));
+          classifyTypeCard(key);
+        });
+        container.appendChild(bin);
+      });
+    }
+
+    function selectTypeCard(index) {
+      selectedTypeCard = index;
+      renderTypeCards();
+      const card = typeRounds[typeRound].cards[index];
+      el("typeFeedback").className = "type-feedback";
+      el("typeFeedback").innerHTML = `<strong>${card.name}</strong> is selected. Which type best describes this variable?`;
+    }
+
+    function classifyTypeCard(type) {
+      if (selectedTypeCard === null || sortedTypeCards.has(selectedTypeCard)) {
+        el("typeFeedback").className = "type-feedback bad";
+        el("typeFeedback").innerHTML = "<strong>Choose a variable first.</strong> Select a card above, then choose its type.";
+        return;
+      }
+      const card = typeRounds[typeRound].cards[selectedTypeCard];
+      if (card.type !== type) {
+        typeStreak = 0;
+        typeScore = Math.max(0, typeScore - 2);
+        el("typeFeedback").className = "type-feedback bad";
+        el("typeFeedback").innerHTML = `<strong>Not quite.</strong> ${card.name} is not best treated as ${typeNames[type][0].toLowerCase()}. Think about whether it is a label, an order, a quantity, or one of two states.`;
+        updateTypeStats();
+        return;
+      }
+      typeStreak += 1;
+      typeScore += 10 + Math.min(typeStreak - 1, 5);
+      sortedTypeCards.add(selectedTypeCard);
+      el("typeFeedback").className = "type-feedback good";
+      el("typeFeedback").innerHTML = `<strong>${typeNames[type][0]} is the best answer.</strong> ${card.why}`;
+      selectedTypeCard = null;
+      el("typeSorted").textContent = sortedTypeCards.size;
+      renderTypeCards();
+      renderTypeBins();
+      updateTypeStats();
+      if (sortedTypeCards.size === typeRounds[typeRound].cards.length) {
+        el("typeNextBtn").disabled = false;
+        el("typeProgress").textContent = "Level complete—nice classification work.";
+      }
+    }
+
+    function nextTypeRound() {
+      if (typeRound < typeRounds.length - 1) {
+        typeRound += 1;
+        renderTypeRound();
+      } else {
+        el("typeGame").classList.add("hidden");
+        el("typeCompletion").classList.remove("hidden");
+        const previousBest = Number(localStorage.getItem("typeSorterBest") || "0");
+        if (typeScore > previousBest) {
+          localStorage.setItem("typeSorterBest", String(typeScore));
+          showToast("New Type Sorter best: " + typeScore);
+        }
+      }
+    }
+
     el("restartBtn").addEventListener("click", startGame);
     el("nextBtn").addEventListener("click", nextRound);
     el("hintBtn").addEventListener("click", showHint);
     el("copyBtn").addEventListener("click", copyLessonIdeas);
+    el("detectiveTab").addEventListener("click", () => setGameView("detective"));
+    el("typesTab").addEventListener("click", () => setGameView("types"));
+    el("typeNextBtn").addEventListener("click", nextTypeRound);
+    el("typeRestartBtn").addEventListener("click", startTypeGame);
+    el("copyrightYear").textContent = new Date().getFullYear();
     startGame();
+    startTypeGame();
+    setGameView(location.hash === "#type-sorter" ? "types" : "detective");
 
   </script>
 </body>

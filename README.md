@@ -1,6 +1,9 @@
-# Data Detective
+# HESCOR Data Learning Lab
 
-A small browser game for learning basic data-management and data-science problems by spotting errors in mock tabular data.
+Two small browser games for learning basic data literacy:
+
+- **Data Detective** teaches data quality by asking players to spot errors in mock tables.
+- **Type Sorter** teaches binary, categorical, ordinal, and numerical variables through card sorting and explanatory feedback.
 
 ## Play
 
@@ -23,7 +26,7 @@ Example problems include:
 
 ## How to use
 
-Open the web app and click the wrong data.
+Open the web app and choose a game. In Data Detective, click suspicious cells. In Type Sorter, select or drag each variable into its best analysis type.
 
 ## Local preview
 
