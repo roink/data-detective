@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>H5P runtime smoke test</title>
+</head>
+<body>
+  <div id="h5p-target"></div>
+  <script>
+    const artifacts = {
+      "hescor-data-learning-lab": {
+        machineName: "H5P.DataLearningLab",
+        className: "DataLearningLab",
+        defaultGame: "detective",
+        expectedGame: "detectiveView",
+        combined: true
+      },
+      "data-detective": {
+        machineName: "H5P.DataDetective",
+        className: "DataDetective",
+        defaultGame: "detective",
+        expectedGame: "detectiveView"
+      },
+      "type-sorter": {
+        machineName: "H5P.TypeSorter",
+        className: "TypeSorter",
+        defaultGame: "types",
+        expectedGame: "typesView"
+      }
+    };
+
+    const slug = new URLSearchParams(location.search).get("artifact") || "hescor-data-learning-lab";
+    const artifact = artifacts[slug];
+    const libraryRoot = `../.build/${slug}/${artifact.machineName}-1.0`;
+
+    const stylesheet = document.createElement("link");
+    stylesheet.rel = "stylesheet";
+    stylesheet.href = `${libraryRoot}/app.css`;
+    document.head.appendChild(stylesheet);
+
+    window.H5P = {
+      EventDispatcher: function () {},
+      getLibraryPath: function () { return libraryRoot; }
+    };
+    H5P.EventDispatcher.prototype.trigger = function () {
+      document.body.dataset.resizeTriggered = "true";
+    };
+    H5P.jQuery = function (element) {
+      return {
+        html: function (value) { if (arguments.length) element.innerHTML = value; return this; },
+        addClass: function (value) { element.classList.add(value); return this; },
+        append: function (value) { element.appendChild(value); return this; },
+        get: function () { return element; }
+      };
+    };
+
+    const script = document.createElement("script");
+    script.src = `${libraryRoot}/app.js`;
+    script.onload = function () {
+      const activity = new H5P[artifact.className]({ defaultGame: artifact.defaultGame }, 1);
+      activity.attach(H5P.jQuery(document.getElementById("h5p-target")));
+      const hasExpectedGame = Boolean(document.getElementById(artifact.expectedGame));
+      const hasChrome = Boolean(document.querySelector(".site-header, .game-switcher, .brand-footer"));
+      document.body.dataset.h5pReady = String(
+        hasExpectedGame && (artifact.combined ? hasChrome : !hasChrome)
+      );
+    };
+    document.head.appendChild(script);
+  </script>
+</body>
+</html>

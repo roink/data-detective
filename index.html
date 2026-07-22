@@ -558,6 +558,7 @@
     .tab-number { display: grid; place-items: center; width: 28px; height: 28px; background: var(--cyan-soft); color: var(--blue); border-radius: 50%; font-size: .82rem; }
 
     .page { padding: 34px 0 54px; }
+    .page.page--isolated { padding-top: 18px; padding-bottom: 24px; }
     .game-view[hidden] { display: none; }
     .game-intro { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 18px; }
     .game-intro h2 { margin: 0; color: var(--blue); font-size: clamp(1.65rem, 3vw, 2.25rem); line-height: 1.1; }
@@ -674,6 +675,7 @@
   </style>
 </head>
 <body>
+  <!-- build:header:start -->
   <header class="site-header">
     <div class="nav-shell">
       <a href="https://www.hescor-project.com/" aria-label="HESCOR project website">
@@ -682,7 +684,9 @@
       <a class="site-link" href="https://www.hescor-project.com/">Visit hescor-project.com&nbsp; →</a>
     </div>
   </header>
+  <!-- build:header:end -->
 
+  <!-- build:switcher:start -->
   <nav class="game-switcher" aria-label="Choose a learning game" role="tablist">
     <button class="game-tab" id="detectiveTab" role="tab" aria-controls="detectiveView" aria-selected="true">
       <span class="tab-number">01</span> Data Detective
@@ -691,8 +695,10 @@
       <span class="tab-number">02</span> Type Sorter
     </button>
   </nav>
+  <!-- build:switcher:end -->
 
   <main class="page">
+    <!-- build:detective:start -->
     <section id="detectiveView" class="game-view" role="tabpanel" aria-labelledby="detectiveTab">
       <div class="game-intro">
         <div>
@@ -769,7 +775,9 @@
         </aside>
       </div>
     </section>
+    <!-- build:detective:end -->
 
+    <!-- build:types:start -->
     <section id="typesView" class="game-view" role="tabpanel" aria-labelledby="typesTab" hidden>
       <div class="game-intro">
         <div>
@@ -830,8 +838,10 @@
         <button id="typeRestartBtn">Play again</button>
       </div>
     </section>
+    <!-- build:types:end -->
   </main>
 
+  <!-- build:footer:start -->
   <footer class="brand-footer">
     <div class="brand-footer__inner">
       <div class="funders">
@@ -844,8 +854,11 @@
       <div class="copyright">© University of Cologne <span id="copyrightYear"></span> · HESCOR Project</div>
     </div>
   </footer>
+  <!-- build:footer:end -->
 
+  <!-- build:toast:start -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <!-- build:toast:end -->
 
   <script>
     const rounds = [
@@ -1181,7 +1194,7 @@
     const hintBtn = el("hintBtn");
     const lessonCard = el("lessonCard");
 
-    el("roundTotal").textContent = rounds.length;
+    if (el("roundTotal")) el("roundTotal").textContent = rounds.length;
 
     function showToast(message) {
       const toast = el("toast");
@@ -1464,12 +1477,18 @@
     let sortedTypeCards = new Set();
 
     function setGameView(view) {
-      const isDetective = view === "detective";
-      el("detectiveView").hidden = !isDetective;
-      el("typesView").hidden = isDetective;
-      el("detectiveTab").setAttribute("aria-selected", String(isDetective));
-      el("typesTab").setAttribute("aria-selected", String(!isDetective));
-      history.replaceState(null, "", isDetective ? "#data-detective" : "#type-sorter");
+      const detectiveView = el("detectiveView");
+      const typesView = el("typesView");
+      const hasDetective = Boolean(detectiveView);
+      const hasTypes = Boolean(typesView);
+      const isDetective = view === "detective" ? hasDetective : !hasTypes;
+      if (detectiveView) detectiveView.hidden = !isDetective;
+      if (typesView) typesView.hidden = isDetective;
+      if (el("detectiveTab")) el("detectiveTab").setAttribute("aria-selected", String(isDetective));
+      if (el("typesTab")) el("typesTab").setAttribute("aria-selected", String(!isDetective));
+      if (hasDetective && hasTypes) {
+        history.replaceState(null, "", isDetective ? "#data-detective" : "#type-sorter");
+      }
     }
 
     function startTypeGame() {
@@ -1614,18 +1633,22 @@
       }
     }
 
-    el("restartBtn").addEventListener("click", startGame);
-    el("nextBtn").addEventListener("click", nextRound);
-    el("hintBtn").addEventListener("click", showHint);
-    el("copyBtn").addEventListener("click", copyLessonIdeas);
-    el("detectiveTab").addEventListener("click", () => setGameView("detective"));
-    el("typesTab").addEventListener("click", () => setGameView("types"));
-    el("typeNextBtn").addEventListener("click", nextTypeRound);
-    el("typeRestartBtn").addEventListener("click", startTypeGame);
-    el("copyrightYear").textContent = new Date().getFullYear();
-    startGame();
-    startTypeGame();
-    setGameView(location.hash === "#type-sorter" ? "types" : "detective");
+    if (el("restartBtn")) el("restartBtn").addEventListener("click", startGame);
+    if (el("nextBtn")) el("nextBtn").addEventListener("click", nextRound);
+    if (el("hintBtn")) el("hintBtn").addEventListener("click", showHint);
+    if (el("copyBtn")) el("copyBtn").addEventListener("click", copyLessonIdeas);
+    if (el("detectiveTab")) el("detectiveTab").addEventListener("click", () => setGameView("detective"));
+    if (el("typesTab")) el("typesTab").addEventListener("click", () => setGameView("types"));
+    if (el("typeNextBtn")) el("typeNextBtn").addEventListener("click", nextTypeRound);
+    if (el("typeRestartBtn")) el("typeRestartBtn").addEventListener("click", startTypeGame);
+    if (el("copyrightYear")) el("copyrightYear").textContent = new Date().getFullYear();
+    if (el("detectiveView")) startGame();
+    if (el("typesView")) startTypeGame();
+    if (el("detectiveView") && el("typesView")) {
+      setGameView(location.hash === "#type-sorter" ? "types" : "detective");
+    } else {
+      setGameView(el("typesView") ? "types" : "detective");
+    }
 
   </script>
 </body>
