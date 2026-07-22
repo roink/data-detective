@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software in your work, please cite it using the metadata below."
+title: "HESCOR Data Learning Lab"
+type: software
+authors:
+  - family-names: "Schlüter"
+    given-names: "Philipp"
+    orcid: "https://orcid.org/0009-0001-7947-5222"
+repository-code: "https://github.com/roink/data-detective"
+url: "https://roink.github.io/data-detective/"
+abstract: "HESCOR Data Learning Lab provides two browser-based educational games for teaching data quality and variable types, with standalone HTML and H5P deployment formats."
+keywords:
+  - data literacy
+  - data quality
+  - variable types
+  - educational games
+  - H5P
+  - HESCOR
+license: "MIT"
+date-released: "2026-07-22"
