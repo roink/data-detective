@@ -4,10 +4,11 @@
 
 # HESCOR Data Learning Lab
 
-Two browser games for learning basic data literacy:
+Three browser games for learning basic data literacy:
 
 - **Data Detective** teaches data quality by asking players to spot errors in mock tables.
 - **Type Sorter** teaches binary, categorical, ordinal, and numerical variables through card sorting and explanatory feedback.
+- **Metadata Explorer** shows how metadata give a field-survey dataset meaning, context and reusability across seven short levels.
 
 Play the combined website at [roink.github.io/data-detective](https://roink.github.io/data-detective/).
 
@@ -18,6 +19,7 @@ The latest validated packages are published as permanent GitHub Release download
 - [Combined HESCOR Data Learning Lab](https://github.com/roink/data-detective/releases/latest/download/hescor-data-learning-lab.h5p)
 - [Data Detective only](https://github.com/roink/data-detective/releases/latest/download/data-detective.h5p)
 - [Type Sorter only](https://github.com/roink/data-detective/releases/latest/download/type-sorter.h5p)
+- [Metadata Explorer only](https://github.com/roink/data-detective/releases/latest/download/metadata-explorer.h5p)
 - [SHA-256 checksums](https://github.com/roink/data-detective/releases/latest/download/SHA256SUMS.txt)
 
 See the [latest release](https://github.com/roink/data-detective/releases/latest) for all downloads in one place.
@@ -36,6 +38,7 @@ dist/
   hescor-data-learning-lab.h5p
   data-detective.h5p
   type-sorter.h5p
+  metadata-explorer.h5p
 ```
 
 ## Build and check
@@ -54,9 +57,10 @@ The deployment outputs are:
 | Artifact | Purpose |
 | --- | --- |
 | `index.html` and `assets/` | Canonical combined GitHub Pages deployment; used directly, not generated |
-| `dist/hescor-data-learning-lab.h5p` | Combined H5P with both games and full HESCOR header/footer |
+| `dist/hescor-data-learning-lab.h5p` | Combined H5P with all three games and full HESCOR header/footer |
 | `dist/data-detective.h5p` | Data Detective only, without site header/footer |
 | `dist/type-sorter.h5p` | Type Sorter only, without site header/footer |
+| `dist/metadata-explorer.h5p` | Metadata Explorer only, without site header/footer |
 
 The H5P files contain custom libraries. The account performing the first upload must therefore be allowed to install H5P libraries.
 

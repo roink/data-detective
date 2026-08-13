@@ -533,7 +533,7 @@
       width: min(1240px, calc(100vw - 40px));
       margin: -22px auto 0;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       background: white;
       border: 1px solid var(--line);
       box-shadow: var(--shadow);
@@ -632,6 +632,69 @@
     .type-completion h3 { color: var(--blue); font-size: clamp(1.8rem, 4vw, 3rem); text-transform: none; margin-bottom: 10px; }
     .type-completion p { max-width: 690px; margin: 0 auto 20px; color: var(--muted); }
 
+    /* Metadata Explorer */
+    .metadata-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start; }
+    .metadata-board { border-top: 4px solid var(--cyan); }
+    .metadata-head { padding: 22px 24px 18px; border-bottom: 1px solid var(--line); }
+    .metadata-headline { display: flex; justify-content: space-between; align-items: start; gap: 18px; }
+    .metadata-head h3 { margin: 3px 0 6px; color: var(--blue); font-size: clamp(1.35rem, 2.4vw, 2rem); }
+    .metadata-head p { margin: 0; color: var(--muted); line-height: 1.45; }
+    .metadata-workspace { padding: 20px 22px 24px; }
+    .metadata-cards, .metadata-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .metadata-card, .metadata-option { min-height: 76px; padding: 13px; border: 2px solid #a9d1dc; border-top: 5px solid var(--cyan); background: white; color: var(--blue); text-align: left; box-shadow: 0 4px 10px rgba(0,81,118,.05); }
+    .metadata-card:hover, .metadata-option:hover { border-color: var(--accent); box-shadow: 0 5px 0 var(--accent-soft); }
+    .metadata-card.selected { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 5px 0 var(--accent-soft); }
+    .metadata-card[draggable="true"] { cursor: grab; }
+    .metadata-card[draggable="true"]:active { cursor: grabbing; }
+    .metadata-card strong, .metadata-option strong { display: block; font-size: .86rem; margin-bottom: 4px; }
+    .metadata-card span, .metadata-option span { color: var(--muted); font-size: .86rem; line-height: 1.3; }
+    .metadata-bins { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+    .metadata-bin { min-height: 112px; padding: 13px; border: 2px dashed #8ebdcc; background: #f6fbfc; cursor: pointer; }
+    .metadata-bin:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .metadata-bin.dragover, .metadata-slot.dragover { border-color: var(--accent); background: var(--accent-soft); }
+    .metadata-bin h4 { color: var(--blue); margin: 0 0 4px; }
+    .metadata-bin p { font-size: .83rem; }
+    .metadata-table { width: 100%; min-width: 0; margin-bottom: 16px; font-size: .9rem; }
+    .metadata-table th, .metadata-table td { padding: 9px; }
+    .metadata-slots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .metadata-slot { min-height: 64px; padding: 11px; border: 2px dashed #8ebdcc; background: #f6fbfc; color: var(--blue); font-weight: 800; cursor: pointer; }
+    .metadata-slot small { display: block; margin-top: 4px; color: var(--muted); font-weight: 500; }
+    .codebook-intro { margin: 0 0 10px; color: var(--blue); font-weight: 850; }
+    .codebook-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .codebook-card { border: 1px solid #8ebdcc; border-top: 5px solid var(--cyan); background: #f6fbfc; }
+    .codebook-card h4 { margin: 0; padding: 11px 13px; border-bottom: 1px solid var(--line); color: var(--blue); font-size: .98rem; }
+    .codebook-values { display: grid; gap: 1px; background: var(--line); }
+    .codebook-value { display: grid; grid-template-columns: 34px 1fr; align-items: center; gap: 9px; padding: 8px 12px; background: white; color: var(--ink); }
+    .codebook-value code { display: grid; place-items: center; width: 30px; height: 28px; background: var(--cyan-soft); color: var(--blue); font-weight: 900; }
+    .metadata-record { margin: 18px 0 16px; padding: 14px; border-left: 5px solid var(--accent); background: var(--accent-soft); }
+    .metadata-record h4 { margin: 0 0 10px; color: var(--blue); }
+    .record-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .record-field { padding: 9px 10px; border: 1px solid #f3b1ad; background: white; }
+    .record-field span { display: block; margin-bottom: 3px; color: var(--muted); font-size: .72rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+    .record-field strong { color: var(--blue); font-size: 1.05rem; }
+    .dataset-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+    .dataset-panel { overflow: hidden; border: 1px solid #8ebdcc; border-top: 5px solid var(--cyan); background: white; }
+    .dataset-panel__head { padding: 11px 13px; border-bottom: 1px solid var(--line); background: #f6fbfc; }
+    .dataset-label { display: inline-block; margin-bottom: 5px; padding: 3px 7px; background: var(--cyan-soft); color: var(--blue); font-size: .7rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+    .dataset-panel h4 { margin: 0; color: var(--blue); font-size: 1rem; line-height: 1.3; }
+    .dataset-fields { display: grid; }
+    .dataset-field { display: grid; grid-template-columns: minmax(90px, .8fr) minmax(0, 1.2fr); gap: 10px; padding: 9px 12px; border-top: 1px solid var(--line); }
+    .dataset-field:first-child { border-top: 0; }
+    .dataset-field span { color: var(--muted); font-size: .78rem; font-weight: 750; }
+    .dataset-field strong { color: var(--ink); font-size: .86rem; overflow-wrap: anywhere; }
+    .metadata-question { margin: 0 0 12px; color: var(--blue); font-weight: 850; line-height: 1.5; }
+    .metadata-feedback { min-height: 70px; margin-top: 18px; padding: 14px 16px; border-left: 5px solid var(--cyan); background: var(--cyan-soft); line-height: 1.45; }
+    .metadata-feedback.good { border-color: var(--good); background: var(--good-soft); }
+    .metadata-feedback.bad { border-color: var(--accent); background: var(--accent-soft); }
+    .metadata-actions { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-top: 16px; }
+    .metadata-status { color: var(--muted); font-size: .9rem; font-weight: 700; }
+    .metadata-guide { position: sticky; top: 18px; padding: 20px; border-top: 4px solid var(--cyan); }
+    .metadata-guide h3 { color: var(--blue); margin-bottom: 9px; }
+    .metadata-guide p { color: var(--muted); line-height: 1.45; font-size: .9rem; }
+    .metadata-guide ul { list-style: none; padding: 0; margin: 14px 0 0; }
+    .metadata-guide li { color: var(--muted); margin: 9px 0; padding-left: 20px; position: relative; font-size: .88rem; }
+    .metadata-guide li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-weight: 900; }
+
     .brand-footer { background: white; border-top: 10px solid #e9eeee; }
     .brand-footer__inner { padding: 34px 0 26px; }
     .funders { display: flex; justify-content: space-between; align-items: center; gap: 38px; }
@@ -646,8 +709,8 @@
     @media (max-width: 900px) {
       .site-header { min-height: 0; }
       .game-intro { align-items: flex-start; flex-direction: column; }
-      .layout, .type-layout { grid-template-columns: 1fr; }
-      .concept-card { position: static; }
+      .layout, .type-layout, .metadata-layout { grid-template-columns: 1fr; }
+      .concept-card, .metadata-guide { position: static; }
       .variable-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .type-bins { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .funders { align-items: flex-start; flex-direction: column; }
@@ -668,6 +731,10 @@
       .variable-cards { grid-template-columns: 1fr; }
       .type-bins { grid-template-columns: 1fr 1fr; }
       .type-bin { min-height: 110px; }
+      .metadata-cards, .metadata-options, .metadata-slots { grid-template-columns: 1fr; }
+      .codebook-grid { grid-template-columns: 1fr; }
+      .record-fields { grid-template-columns: 1fr; }
+      .dataset-comparison { grid-template-columns: 1fr; }
       .logo-row { align-items: flex-start; flex-direction: column; gap: 24px; }
       .ministry-logo { width: 270px; max-width: 100%; }
       .uni-logo { width: 145px; max-width: 100%; }
@@ -693,6 +760,9 @@
     </button>
     <button class="game-tab" id="typesTab" role="tab" aria-controls="typesView" aria-selected="false">
       <span class="tab-number">02</span> Type Sorter
+    </button>
+    <button class="game-tab" id="metadataTab" role="tab" aria-controls="metadataView" aria-selected="false">
+      <span class="tab-number">03</span> Metadata Explorer
     </button>
   </nav>
   <!-- build:switcher:end -->
@@ -839,6 +909,61 @@
       </div>
     </section>
     <!-- build:types:end -->
+
+    <!-- build:metadata:start -->
+    <section id="metadataView" class="game-view" role="tabpanel" aria-labelledby="metadataTab" hidden>
+      <div class="game-intro">
+        <div>
+          <h2>Metadata Explorer</h2>
+          <p>Follow one field-survey dataset as metadata make it understandable, comparable and reusable.</p>
+        </div>
+        <div class="stats" aria-live="polite">
+          <div class="pill">Level <span id="metadataLevelNow">1</span>/<span id="metadataLevelTotal">7</span></div>
+          <div class="pill">Score <span id="metadataScore">0</span></div>
+        </div>
+      </div>
+
+      <div id="metadataGame" class="metadata-layout">
+        <section class="card metadata-board">
+          <div class="metadata-head">
+            <div class="metadata-headline">
+              <div>
+                <p class="eyebrow" id="metadataKicker" style="color:var(--accent)">Level 1</p>
+                <h3 id="metadataTitle">Data or metadata?</h3>
+                <p id="metadataInstruction"></p>
+              </div>
+              <div class="pill"><span id="metadataProgress">0</span>/<span id="metadataTarget">0</span> solved</div>
+            </div>
+          </div>
+          <div id="metadataWorkspace" class="metadata-workspace"></div>
+          <div class="metadata-feedback" id="metadataFeedback" role="status" aria-live="polite"><strong>Ready?</strong> Start with any card.</div>
+          <div class="metadata-actions">
+            <span id="metadataStatus" class="metadata-status">Metadata add context to data.</span>
+            <button id="metadataNextBtn" disabled>Next level</button>
+          </div>
+        </section>
+        <aside class="card metadata-guide">
+          <h3>Dataset passport</h3>
+          <p id="metadataGuideText">A dataset becomes more useful when someone can tell what its values mean and how they were made.</p>
+          <ul id="metadataGuideList">
+            <li>Meaning and units</li><li>Methods and codes</li><li>Place, time and creator</li><li>License for reuse</li>
+          </ul>
+        </aside>
+      </div>
+
+      <div id="metadataCompletion" class="card type-completion hidden">
+        <p class="eyebrow" style="color:var(--accent)">Metadata rescue complete</p>
+        <h3>Now the data can travel.</h3>
+        <p>The observations did not change. Their metadata made the dataset understandable, interpretable, safe to combine and ready for someone else to reuse.</p>
+        <div class="badge-grid">
+          <div class="badge"><strong>Meaning</strong><span>Names, definitions, units and codes explain values.</span></div>
+          <div class="badge"><strong>Context</strong><span>Methods, place and time show how observations were produced.</span></div>
+          <div class="badge"><strong>Reuse</strong><span>Creators and licenses make attribution and permitted reuse clear.</span></div>
+        </div>
+        <button id="metadataRestartBtn">Play again</button>
+      </div>
+    </section>
+    <!-- build:metadata:end -->
   </main>
 
   <!-- build:footer:start -->
@@ -1479,15 +1604,20 @@
     function setGameView(view) {
       const detectiveView = el("detectiveView");
       const typesView = el("typesView");
+      const metadataView = el("metadataView");
       const hasDetective = Boolean(detectiveView);
       const hasTypes = Boolean(typesView);
-      const isDetective = view === "detective" ? hasDetective : !hasTypes;
+      const hasMetadata = Boolean(metadataView);
+      const active = view === "metadata" && hasMetadata ? "metadata" : view === "types" && hasTypes ? "types" : hasDetective ? "detective" : hasTypes ? "types" : "metadata";
+      const isDetective = active === "detective";
       if (detectiveView) detectiveView.hidden = !isDetective;
-      if (typesView) typesView.hidden = isDetective;
+      if (typesView) typesView.hidden = active !== "types";
+      if (metadataView) metadataView.hidden = active !== "metadata";
       if (el("detectiveTab")) el("detectiveTab").setAttribute("aria-selected", String(isDetective));
-      if (el("typesTab")) el("typesTab").setAttribute("aria-selected", String(!isDetective));
-      if (hasDetective && hasTypes) {
-        history.replaceState(null, "", isDetective ? "#data-detective" : "#type-sorter");
+      if (el("typesTab")) el("typesTab").setAttribute("aria-selected", String(active === "types"));
+      if (el("metadataTab")) el("metadataTab").setAttribute("aria-selected", String(active === "metadata"));
+      if ((hasDetective && hasTypes) || hasMetadata) {
+        history.replaceState(null, "", active === "detective" ? "#data-detective" : active === "types" ? "#type-sorter" : "#metadata-explorer");
       }
     }
 
@@ -1633,21 +1763,253 @@
       }
     }
 
+    const metadataLevels = [
+      { kind: "sort", kicker: "Level 1 · The distinction", title: "Data or metadata?", instruction: "A field survey recorded trees. Drag a card into a bin, or select the card and then click the bin.", cards: [
+        ["12.4", "a recorded value", "data"], ["Quercus robur", "a recorded species", "data"], ["S-017", "a sample identifier", "data"], ["Unit: metres", "how to read a measurement", "metadata"], ["Dataset creator: A. Researcher", "who made the dataset", "metadata"], ["Measurement method: laser rangefinder", "how values were produced", "metadata"]
+      ], lesson: "Metadata are themselves data. Their role is to describe other data or the dataset containing them." },
+      { kind: "match", kicker: "Level 2 · Meaning", title: "The mystery table", instruction: "The values are unchanged, but the headings are missing. Drag each heading onto its column, or use select then click.", columns: [["S-017", "S-018"], ["12.4", "8.7"], ["Quercus robur", "Fagus sylvatica"], ["2026-05-12", "2026-05-12"]], cards: ["Sample ID", "Tree height (m)", "Species", "Observation date"], lesson: "The values did not change. Metadata changed what you know about them: a value has meaning, a unit and a role." },
+      { kind: "questions", kicker: "Level 3 · Questions", title: "What do you need to know?", instruction: "Useful metadata answer practical questions. Choose the field that would help each time.", questions: [
+        ["Before comparing a column called temperature with your own measurements, what do you need?", ["Unit", "Creator", "File size"], 0, "Units make measurements comparable."],
+        ["Before putting coordinates on a map, what information might you need?", ["Coordinate reference system", "License", "Number of rows"], 0, "A coordinate reference system tells software how locations are expressed."],
+        ["What tells you whether reuse is permitted?", ["Creator", "License", "File name"], 1, "A license gives the terms for reuse."],
+        ["What helps you understand an unfamiliar recording procedure?", ["Method", "Dataset title", "File size"], 0, "Methods describe how observations were produced."]
+      ], lesson: "Metadata are useful information, not administrative decoration: units support interpretation, methods support provenance and licenses support reuse." },
+      { kind: "questions", kicker: "Level 4 · Codebook", title: "Crack the code", instruction: "Read the codebook, then use it to interpret each record.", codebook: [
+        { field: "habitat", values: [["1", "forest"], ["2", "grassland"], ["3", "wetland"]] },
+        { field: "presence", values: [["0", "absent"], ["1", "present"]] }
+      ], questions: [
+        ["What does this record mean?", ["Species present at a grassland site", "Species absent at a grassland site", "Species present at a forest site"], 0, "The codebook turns habitat 2 into grassland and presence 1 into present.", { site: "S01", habitat: "2", presence: "1" }],
+        ["What does this record mean?", ["Species absent at a forest site", "Species present at a wetland site", "Species present at a forest site"], 0, "The codebook turns habitat 1 into forest and presence 0 into absent.", { site: "S02", habitat: "1", presence: "0" }]
+      ], lesson: "Codebooks are variable-level metadata. They preserve what values and categories actually mean." },
+      { kind: "questions", kicker: "Level 5 · Safe integration", title: "Spot the hidden mismatch", instruction: "The columns look compatible. Click the metadata that needs attention before combining the datasets.", questions: [
+        ["What metadata must be harmonised before appending these datasets?", ["The units", "The sample IDs", "The number of rows"], 0, "Both describe depth, but metres and centimetres must be harmonised first.", [
+          { label: "Dataset A", title: "Depth observations", fields: [["Variable", "depth"], ["Value", "0.35"], ["Unit", "m"]] },
+          { label: "Dataset B", title: "Depth observations", fields: [["Variable", "depth"], ["Value", "35"], ["Unit", "cm"]] }
+        ]],
+        ["What metadata reveal that these measurements should not be treated as equivalent?", ["The measurement definition", "The file name", "The creator's initials"], 0, "The unit might match, but these observations represent different things.", [
+          { label: "Dataset A", title: "Temperature observations", fields: [["Variable", "temperature"], ["Unit", "°C"], ["Measurement", "Air temperature at 2 m"]] },
+          { label: "Dataset B", title: "Temperature observations", fields: [["Variable", "temperature"], ["Unit", "°C"], ["Measurement", "Soil temperature at 10 cm depth"]] }
+        ]]
+      ], lesson: "Similar-looking data may not mean the same thing. Metadata prevent incorrect comparisons and combinations." },
+      { kind: "questions", kicker: "Level 6 · Reuse", title: "Which dataset would you reuse?", instruction: "Both files contain 2,314 tree observations. Choose the one you could understand, cite and reuse responsibly.", questions: [
+        ["Which dataset would you choose for your study?", ["Dataset A", "Dataset B"], 1, "Dataset B tells you what it is, what its columns mean, where and when it was made, how it was produced and whether reuse is allowed.", [
+          { label: "Dataset A", title: "trees_final.csv", fields: [["Observations", "2,314"], ["Documentation", "None supplied"]] },
+          { label: "Dataset B", title: "Urban Tree Survey 2026", fields: [["Observations", "2,314"], ["Variables", "Names and units documented"], ["Coverage", "Cologne · Apr–Jun 2026"], ["Method", "Measurement procedure described"], ["License", "CC BY 4.0"]] }
+        ]]
+      ], lesson: "Good metadata make data understandable, citable and reusable without changing the underlying observations." },
+      { kind: "rescue", kicker: "Level 7 · Metadata rescue", title: "Complete the metadata passport", instruction: "A colleague sent a vegetation survey. Drag each card to its blank, or use select then click.", slots: ["Creator", "Variable height", "Measurement method", "License"], cards: [["J. Example", "Creator"], ["metres", "Variable height"], ["laser rangefinder", "Measurement method"], ["CC BY 4.0", "License"]], lesson: "Together, metadata provide the context someone else needs to understand and reuse a dataset." }
+    ];
+    let metadataLevel = 0, metadataScore = 0, metadataSelected = null, metadataSolved = new Set(), metadataQuestion = 0;
+
+    function metadataFeedback(message, state = "") {
+      const box = el("metadataFeedback"); box.className = `metadata-feedback ${state}`; box.innerHTML = message;
+    }
+    function updateMetadataStats() {
+      el("metadataLevelNow").textContent = metadataLevel + 1; el("metadataLevelTotal").textContent = metadataLevels.length; el("metadataScore").textContent = metadataScore;
+    }
+    function metadataTargetCount(level = metadataLevels[metadataLevel]) {
+      return level.kind === "questions" ? level.questions.length : (level.cards || level.slots).length;
+    }
+    function metadataCompleteItem(key, message) {
+      if (metadataSolved.has(key)) return false;
+      metadataSolved.add(key); metadataScore += 10;
+      metadataFeedback(`<strong>Exactly.</strong> ${message}`, "good");
+      el("metadataProgress").textContent = metadataSolved.size;
+      updateMetadataStats();
+      if (metadataSolved.size === metadataTargetCount()) {
+        el("metadataNextBtn").disabled = false;
+        el("metadataStatus").textContent = "Level complete — the dataset has more context now.";
+      }
+      return true;
+    }
+    function renderMetadataLevel() {
+      const level = metadataLevels[metadataLevel], workspace = el("metadataWorkspace");
+      metadataSelected = null; metadataSolved = new Set(); metadataQuestion = 0; workspace.innerHTML = "";
+      el("metadataKicker").textContent = level.kicker; el("metadataTitle").textContent = level.title; el("metadataInstruction").textContent = level.instruction;
+      el("metadataGuideText").textContent = level.lesson;
+      el("metadataProgress").textContent = "0"; el("metadataTarget").textContent = metadataTargetCount(level);
+      el("metadataNextBtn").disabled = true; el("metadataNextBtn").textContent = metadataLevel === metadataLevels.length - 1 ? "See your result" : "Next level";
+      el("metadataStatus").textContent = "Metadata add context to data."; metadataFeedback("<strong>Ready?</strong> Start with any card."); updateMetadataStats();
+      if (level.kind === "sort") renderMetadataSort(level, workspace);
+      if (level.kind === "match") renderMetadataMatch(level, workspace);
+      if (level.kind === "questions") renderMetadataQuestion(level, workspace);
+      if (level.kind === "rescue") renderMetadataRescue(level, workspace);
+    }
+    function cardButton(label, detail, onClick, dragIndex = null) {
+      const button = document.createElement("button");
+      button.type = "button"; button.className = "metadata-card";
+      button.innerHTML = `<strong>${label}</strong><span>${detail || ""}</span>`;
+      button.addEventListener("click", onClick);
+      if (dragIndex !== null) {
+        button.draggable = true;
+        button.addEventListener("dragstart", event => {
+          metadataSelected = dragIndex;
+          event.dataTransfer.setData("text/plain", String(dragIndex));
+          event.dataTransfer.effectAllowed = "move";
+        });
+      }
+      return button;
+    }
+    function addMetadataDropTarget(target, place) {
+      target.addEventListener("dragover", event => { event.preventDefault(); target.classList.add("dragover"); });
+      target.addEventListener("dragleave", () => target.classList.remove("dragover"));
+      target.addEventListener("drop", event => {
+        event.preventDefault(); target.classList.remove("dragover");
+        const index = Number(event.dataTransfer.getData("text/plain"));
+        if (Number.isInteger(index)) { metadataSelected = index; place(index); }
+      });
+    }
+    function renderMetadataSort(level, workspace) {
+      workspace.replaceChildren();
+      const cards = document.createElement("div"); cards.className = "metadata-cards";
+      level.cards.forEach((card, index) => {
+        if (metadataSolved.has(index)) return;
+        const select = () => {
+          metadataSelected = index;
+          [...cards.children].forEach(item => item.classList.remove("selected"));
+          button.classList.add("selected");
+          metadataFeedback(`<strong>${card[0]}</strong> is selected. Click a bin or drag the card into it.`);
+        };
+        const button = cardButton(card[0], card[1], select, index);
+        if (metadataSelected === index) button.classList.add("selected");
+        cards.append(button);
+      });
+      const bins = document.createElement("div"); bins.className = "metadata-bins";
+      [["data", "Data", "Recorded observations or values"], ["metadata", "Metadata", "Information describing the data"]].forEach(([type, title, text]) => {
+        const bin = document.createElement("button"); bin.type = "button"; bin.className = "metadata-bin"; bin.innerHTML = `<h4>${title}</h4><p>${text}</p>`;
+        const place = index => {
+          if (!Number.isInteger(index)) return metadataFeedback("<strong>Choose a card first.</strong> Then choose a bin.", "bad");
+          const card = level.cards[index];
+          if (!card || metadataSolved.has(index)) return;
+          if (card[2] !== type) return metadataFeedback(`<strong>Try again.</strong> Think about whether “${card[0]}” is a recorded value or describes the dataset.`, "bad");
+          metadataSelected = null;
+          metadataCompleteItem(index, `${card[0]} is ${type === "data" ? "a recorded observation" : "information describing the data"}.`);
+          renderMetadataSort(level, workspace);
+        };
+        bin.addEventListener("click", () => place(metadataSelected)); addMetadataDropTarget(bin, place); bins.append(bin);
+      });
+      workspace.append(cards, bins);
+    }
+    function renderMetadataMatch(level, workspace) {
+      workspace.replaceChildren();
+      const table = document.createElement("table"); table.className = "metadata-table";
+      table.innerHTML = `<thead><tr>${level.columns.map((_, index) => `<th data-col="${index}"></th>`).join("")}</tr></thead><tbody><tr>${level.columns.map(column => `<td>${column[0]}</td>`).join("")}</tr><tr>${level.columns.map(column => `<td>${column[1]}</td>`).join("")}</tr></tbody>`;
+      table.querySelectorAll("th").forEach((th, column) => {
+        const target = document.createElement("button"); target.type = "button"; target.className = "metadata-slot";
+        target.textContent = metadataSolved.has(column) ? level.cards[column] : "?"; target.disabled = metadataSolved.has(column);
+        const place = index => {
+          if (!Number.isInteger(index)) return metadataFeedback("<strong>Select a heading first.</strong>", "bad");
+          if (index !== column) return metadataFeedback("<strong>Not this column.</strong> Look at the values and try another heading.", "bad");
+          metadataSelected = null; metadataCompleteItem(column, "That heading gives this column a clear meaning."); renderMetadataMatch(level, workspace);
+        };
+        target.addEventListener("click", () => place(metadataSelected)); addMetadataDropTarget(target, place); th.append(target);
+      });
+      const cards = document.createElement("div"); cards.className = "metadata-cards";
+      level.cards.forEach((name, index) => {
+        if (metadataSolved.has(index)) return;
+        const button = cardButton(name, "column heading", () => { metadataSelected = index; renderMetadataMatch(level, workspace); metadataFeedback(`<strong>${name}</strong> is selected. Click a column or drag it onto one.`); }, index);
+        if (metadataSelected === index) button.classList.add("selected"); cards.append(button);
+      });
+      workspace.append(table, cards);
+    }
+    function renderMetadataQuestion(level, workspace) {
+      workspace.replaceChildren();
+      const q = level.questions[metadataQuestion]; if (!q) return;
+      if (level.codebook) {
+        const intro = document.createElement("p"); intro.className = "codebook-intro"; intro.textContent = "Given this codebook:";
+        const codebook = document.createElement("div"); codebook.className = "codebook-grid";
+        level.codebook.forEach(variable => {
+          const card = document.createElement("section"); card.className = "codebook-card";
+          const heading = document.createElement("h4"); heading.textContent = variable.field;
+          const values = document.createElement("div"); values.className = "codebook-values";
+          variable.values.forEach(([code, meaning]) => {
+            const row = document.createElement("div"); row.className = "codebook-value";
+            const codeLabel = document.createElement("code"); codeLabel.textContent = code;
+            const meaningLabel = document.createElement("span"); meaningLabel.textContent = meaning;
+            row.append(codeLabel, meaningLabel); values.append(row);
+          });
+          card.append(heading, values); codebook.append(card);
+        });
+        workspace.append(intro, codebook);
+      }
+      if (Array.isArray(q[4])) {
+        const comparison = document.createElement("div"); comparison.className = "dataset-comparison";
+        q[4].forEach(dataset => {
+          const panel = document.createElement("section"); panel.className = "dataset-panel";
+          const head = document.createElement("div"); head.className = "dataset-panel__head";
+          const label = document.createElement("span"); label.className = "dataset-label"; label.textContent = dataset.label;
+          const title = document.createElement("h4"); title.textContent = dataset.title;
+          const fields = document.createElement("div"); fields.className = "dataset-fields";
+          dataset.fields.forEach(([name, value]) => {
+            const row = document.createElement("div"); row.className = "dataset-field";
+            const fieldName = document.createElement("span"); fieldName.textContent = name;
+            const fieldValue = document.createElement("strong"); fieldValue.textContent = value;
+            row.append(fieldName, fieldValue); fields.append(row);
+          });
+          head.append(label, title); panel.append(head, fields); comparison.append(panel);
+        });
+        workspace.append(comparison);
+      } else if (q[4]) {
+        const record = document.createElement("section"); record.className = "metadata-record";
+        const heading = document.createElement("h4"); heading.textContent = "Record to interpret";
+        const fields = document.createElement("div"); fields.className = "record-fields";
+        Object.entries(q[4]).forEach(([field, value]) => {
+          const item = document.createElement("div"); item.className = "record-field";
+          const label = document.createElement("span"); label.textContent = field;
+          const data = document.createElement("strong"); data.textContent = value;
+          item.append(label, data); fields.append(item);
+        });
+        record.append(heading, fields); workspace.append(record);
+      }
+      const question = document.createElement("p"); question.className = "metadata-question"; question.textContent = q[0]; workspace.append(question);
+      const options = document.createElement("div"); options.className = "metadata-options";
+      q[1].forEach((answer, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "metadata-option"; button.innerHTML = `<strong>${answer}</strong>`; button.addEventListener("click", () => { if (index !== q[2]) return metadataFeedback("<strong>Not quite.</strong> Choose the information that directly answers the practical question.", "bad"); metadataCompleteItem(metadataQuestion, q[3]); metadataQuestion += 1; if (metadataQuestion < level.questions.length) renderMetadataQuestion(level, workspace); else { const done = document.createElement("div"); done.className = "metadata-feedback good"; done.innerHTML = "<strong>All questions answered.</strong> Continue when you are ready."; workspace.replaceChildren(done); } }); options.append(button); }); workspace.append(options);
+    }
+    function renderMetadataRescue(level, workspace) {
+      workspace.replaceChildren();
+      const passport = document.createElement("div"); passport.className = "metadata-slots";
+      level.slots.forEach(slot => {
+        const solvedIndex = level.cards.findIndex((card, index) => card[1] === slot && metadataSolved.has(index));
+        const target = document.createElement("button"); target.type = "button"; target.className = "metadata-slot";
+        target.innerHTML = `${slot}: <small>${solvedIndex >= 0 ? level.cards[solvedIndex][0] : "___"}</small>`; target.disabled = solvedIndex >= 0;
+        const place = index => {
+          if (!Number.isInteger(index)) return metadataFeedback("<strong>Select a metadata card first.</strong>", "bad");
+          const card = level.cards[index]; if (!card || metadataSolved.has(index)) return;
+          if (card[1] !== slot) return metadataFeedback(`<strong>Try again.</strong> “${card[0]}” belongs somewhere else in the passport.`, "bad");
+          metadataSelected = null; metadataCompleteItem(index, `${card[0]} completes the ${slot.toLowerCase()} field.`); renderMetadataRescue(level, workspace);
+        };
+        target.addEventListener("click", () => place(metadataSelected)); addMetadataDropTarget(target, place); passport.append(target);
+      });
+      const cards = document.createElement("div"); cards.className = "metadata-cards";
+      level.cards.forEach((card, index) => {
+        if (metadataSolved.has(index)) return;
+        const button = cardButton(card[0], "metadata card", () => { metadataSelected = index; renderMetadataRescue(level, workspace); metadataFeedback(`<strong>${card[0]}</strong> is selected. Click a passport field or drag the card onto one.`); }, index);
+        if (metadataSelected === index) button.classList.add("selected"); cards.append(button);
+      });
+      workspace.append(passport, cards);
+    }
+    function startMetadataGame() { metadataLevel = 0; metadataScore = 0; el("metadataGame").classList.remove("hidden"); el("metadataCompletion").classList.add("hidden"); renderMetadataLevel(); }
+    function nextMetadataLevel() { if (metadataLevel < metadataLevels.length - 1) { metadataLevel += 1; renderMetadataLevel(); } else { el("metadataGame").classList.add("hidden"); el("metadataCompletion").classList.remove("hidden"); } }
+
     if (el("restartBtn")) el("restartBtn").addEventListener("click", startGame);
     if (el("nextBtn")) el("nextBtn").addEventListener("click", nextRound);
     if (el("hintBtn")) el("hintBtn").addEventListener("click", showHint);
     if (el("copyBtn")) el("copyBtn").addEventListener("click", copyLessonIdeas);
     if (el("detectiveTab")) el("detectiveTab").addEventListener("click", () => setGameView("detective"));
     if (el("typesTab")) el("typesTab").addEventListener("click", () => setGameView("types"));
+    if (el("metadataTab")) el("metadataTab").addEventListener("click", () => setGameView("metadata"));
     if (el("typeNextBtn")) el("typeNextBtn").addEventListener("click", nextTypeRound);
     if (el("typeRestartBtn")) el("typeRestartBtn").addEventListener("click", startTypeGame);
+    if (el("metadataNextBtn")) el("metadataNextBtn").addEventListener("click", nextMetadataLevel);
+    if (el("metadataRestartBtn")) el("metadataRestartBtn").addEventListener("click", startMetadataGame);
     if (el("copyrightYear")) el("copyrightYear").textContent = new Date().getFullYear();
     if (el("detectiveView")) startGame();
     if (el("typesView")) startTypeGame();
-    if (el("detectiveView") && el("typesView")) {
-      setGameView(location.hash === "#type-sorter" ? "types" : "detective");
+    if (el("metadataView")) startMetadataGame();
+    if (el("detectiveView") && (el("typesView") || el("metadataView"))) {
+      setGameView(location.hash === "#type-sorter" ? "types" : location.hash === "#metadata-explorer" ? "metadata" : "detective");
     } else {
-      setGameView(el("typesView") ? "types" : "detective");
+      setGameView(el("typesView") ? "types" : el("metadataView") ? "metadata" : "detective");
     }
 
   </script>

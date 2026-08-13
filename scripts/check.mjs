@@ -16,7 +16,8 @@ new Function(siteScript);
 const artifacts = [
   { slug: "hescor-data-learning-lab", machineName: "H5P.DataLearningLab", combined: true },
   { slug: "data-detective", machineName: "H5P.DataDetective", gameId: "detectiveView" },
-  { slug: "type-sorter", machineName: "H5P.TypeSorter", gameId: "typesView" }
+  { slug: "type-sorter", machineName: "H5P.TypeSorter", gameId: "typesView" },
+  { slug: "metadata-explorer", machineName: "H5P.MetadataExplorer", gameId: "metadataView" }
 ];
 
 for (const artifact of artifacts) {
@@ -42,7 +43,7 @@ for (const artifact of artifacts) {
   const appScript = fs.readFileSync(path.join(libraryDir, "app.js"), "utf8");
   new Function(appScript);
   if (artifact.combined) {
-    for (const expected of ["site-header", "game-switcher", "detectiveView", "typesView", "brand-footer"]) {
+    for (const expected of ["site-header", "game-switcher", "detectiveView", "typesView", "metadataView", "brand-footer"]) {
       if (!appScript.includes(expected)) throw new Error(`Combined H5P is missing ${expected}`);
     }
   } else {

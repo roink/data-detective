@@ -19,7 +19,7 @@ const artifacts = [
     className: "DataLearningLab",
     mode: "combined",
     defaultGame: "detective",
-    patchVersion: 1,
+    patchVersion: 4,
     branded: true
   },
   {
@@ -31,6 +31,17 @@ const artifacts = [
     mode: "detective",
     defaultGame: "detective",
     patchVersion: 0,
+    branded: false
+  },
+  {
+    slug: "metadata-explorer",
+    title: "Metadata Explorer",
+    libraryTitle: "Metadata Explorer",
+    machineName: "H5P.MetadataExplorer",
+    className: "MetadataExplorer",
+    mode: "metadata",
+    defaultGame: "metadata",
+    patchVersion: 2,
     branded: false
   },
   {
@@ -78,7 +89,7 @@ function bodyFor(mode) {
     return [
       block("header"),
       block("switcher"),
-      `<main class="page">\n${block("detective")}\n${block("types")}\n</main>`,
+      `<main class="page">\n${block("detective")}\n${block("types")}\n${block("metadata")}\n</main>`,
       block("footer"),
       toast
     ].join("\n\n");
@@ -90,8 +101,8 @@ function bodyFor(mode) {
 const css = extract(/<style>([\s\S]*?)<\/style>/, "styles");
 const sourceScript = extract(/<script>([\s\S]*?)<\/script>/, "application script")
   .replace(
-    /setGameView\(location\.hash === "#type-sorter" \? "types" : "detective"\);/,
-    'setGameView(params.defaultGame === "types" ? "types" : "detective");'
+    /setGameView\(location\.hash === "#type-sorter" \? "types" : location\.hash === "#metadata-explorer" \? "metadata" : "detective"\);/,
+    'setGameView(params.defaultGame === "types" ? "types" : params.defaultGame === "metadata" ? "metadata" : "detective");'
   );
 
 function libraryScriptFor(artifact, body) {
@@ -181,8 +192,8 @@ function buildH5p(artifact) {
   writeJson(path.join(libraryDir, "library.json"), {
     title: artifact.libraryTitle,
     description: artifact.mode === "combined"
-      ? "Two interactive games for learning data quality and variable types."
-      : `An interactive game for learning ${artifact.mode === "detective" ? "data quality" : "variable types"}.`,
+      ? "Three interactive games for learning data quality, variable types and metadata."
+      : `An interactive game for learning ${artifact.mode === "detective" ? "data quality" : artifact.mode === "types" ? "variable types" : "metadata"}.`,
     machineName: artifact.machineName,
     majorVersion: 1,
     minorVersion: 0,
@@ -201,10 +212,11 @@ function buildH5p(artifact) {
     name: "defaultGame",
     type: "select",
     label: "Game shown first",
-    description: "Players can switch between both games after opening the activity.",
+    description: "Players can switch between all three games after opening the activity.",
     options: [
       { value: "detective", label: "Data Detective" },
-      { value: "types", label: "Type Sorter" }
+      { value: "types", label: "Type Sorter" },
+      { value: "metadata", label: "Metadata Explorer" }
     ],
     default: artifact.defaultGame
   }] : [];
