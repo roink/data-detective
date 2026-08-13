@@ -1616,7 +1616,7 @@
       if (el("detectiveTab")) el("detectiveTab").setAttribute("aria-selected", String(isDetective));
       if (el("typesTab")) el("typesTab").setAttribute("aria-selected", String(active === "types"));
       if (el("metadataTab")) el("metadataTab").setAttribute("aria-selected", String(active === "metadata"));
-      if ((hasDetective && hasTypes) || hasMetadata) {
+      if ([hasDetective, hasTypes, hasMetadata].filter(Boolean).length > 1) {
         history.replaceState(null, "", active === "detective" ? "#data-detective" : active === "types" ? "#type-sorter" : "#metadata-explorer");
       }
     }

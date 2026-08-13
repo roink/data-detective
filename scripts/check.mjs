@@ -13,6 +13,20 @@ const siteScript = site.match(/<script>([\s\S]*?)<\/script>/)?.[1];
 if (!siteScript) throw new Error("Could not find the site application script");
 new Function(siteScript);
 
+const pagesDir = path.join(rootDir, ".build", "pages");
+for (const expectedPath of [
+  "index.html",
+  ".nojekyll",
+  "assets/hescor_logo.svg",
+  "data-detective/index.html",
+  "type-sorter/index.html",
+  "metadata-explorer/index.html"
+]) {
+  if (!fs.existsSync(path.join(pagesDir, expectedPath))) {
+    throw new Error(`Generated Pages site is missing ${expectedPath}`);
+  }
+}
+
 const artifacts = [
   { slug: "hescor-data-learning-lab", machineName: "H5P.DataLearningLab", combined: true },
   { slug: "data-detective", machineName: "H5P.DataDetective", gameId: "detectiveView" },
@@ -54,6 +68,26 @@ for (const artifact of artifacts) {
       if (appScript.includes(forbidden)) throw new Error(`${artifact.slug}.h5p contains site chrome`);
     }
   }
+
+  if (!artifact.combined) {
+    const standalonePage = fs.readFileSync(path.join(pagesDir, artifact.slug, "index.html"), "utf8");
+    const standaloneScript = standalonePage.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+    if (!standaloneScript) throw new Error(`${artifact.slug} standalone page has no application script`);
+    new Function(standaloneScript);
+    if (!standalonePage.includes(`id="${artifact.gameId}"`)) {
+      throw new Error(`${artifact.slug} standalone page is missing its game interface`);
+    }
+    for (const forbidden of ["site-header", "game-switcher", "brand-footer"]) {
+      if (standalonePage.includes(`class="${forbidden}"`)) {
+        throw new Error(`${artifact.slug} standalone page contains ${forbidden}`);
+      }
+    }
+    for (const otherGame of artifacts.filter(item => !item.combined && item.slug !== artifact.slug)) {
+      if (standalonePage.includes(`id="${otherGame.gameId}"`)) {
+        throw new Error(`${artifact.slug} standalone page contains ${otherGame.gameId}`);
+      }
+    }
+  }
 }
 
-console.log("All site and H5P artifact checks passed");
+console.log("All Pages and H5P artifact checks passed");

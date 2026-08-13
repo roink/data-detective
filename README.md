@@ -12,6 +12,24 @@ Three browser games for learning basic data literacy:
 
 Play the combined website at [roink.github.io/data-detective](https://roink.github.io/data-detective/).
 
+Standalone, iframe-friendly versions without the exhibition header, game switcher, or footer are also available:
+
+- [Data Detective](https://roink.github.io/data-detective/data-detective/)
+- [Type Sorter](https://roink.github.io/data-detective/type-sorter/)
+- [Metadata Explorer](https://roink.github.io/data-detective/metadata-explorer/)
+
+For example:
+
+```html
+<iframe
+  src="https://roink.github.io/data-detective/metadata-explorer/"
+  title="Metadata Explorer"
+  width="100%"
+  height="900"
+  loading="lazy">
+</iframe>
+```
+
 ## Download H5P packages
 
 The latest validated packages are published as permanent GitHub Release downloads:
@@ -26,14 +44,18 @@ See the [latest release](https://github.com/roink/data-detective/releases/latest
 
 ## Project structure
 
-The root `index.html` and `assets/` directory are the canonical application. The H5P packages are generated from them.
+The root `index.html` and `assets/` directory are the canonical application. The H5P packages and standalone Pages routes are generated from them.
 
 ```text
 index.html                   Canonical markup, styles, game data, and behavior
 assets/                      Canonical HESCOR branding assets and Pages assets
 scripts/
-  build.mjs                  Builds all H5P deployment artifacts
-  check.mjs                  Rebuilds and validates the site and H5P artifacts
+  build.mjs                  Builds Pages and H5P deployment artifacts
+  check.mjs                  Rebuilds and validates Pages and H5P artifacts
+.build/pages/                Generated GitHub Pages deployment
+  data-detective/index.html
+  type-sorter/index.html
+  metadata-explorer/index.html
 dist/
   hescor-data-learning-lab.h5p
   data-detective.h5p
@@ -50,13 +72,14 @@ npm run build
 npm run check
 ```
 
-The same check runs in GitHub Actions for pushes to `master`, pull requests, and manual workflow runs. Successful runs provide a downloadable `hescor-h5p-packages` workflow artifact retained for 30 days. Pushes to `master` also update the permanent `Latest H5P packages` release linked above.
+The same check runs in GitHub Actions for pushes to `master`, pull requests, and manual workflow runs. Successful runs provide a downloadable `hescor-h5p-packages` workflow artifact retained for 30 days. Pushes to `master` deploy the generated Pages site and update the permanent `Latest H5P packages` release linked above.
 
 The deployment outputs are:
 
 | Artifact | Purpose |
 | --- | --- |
-| `index.html` and `assets/` | Canonical combined GitHub Pages deployment; used directly, not generated |
+| `index.html` and `assets/` | Canonical markup, styles, behavior, and branding |
+| `.build/pages/` | Generated Pages site with the combined homepage and three standalone routes |
 | `dist/hescor-data-learning-lab.h5p` | Combined H5P with all three games and full HESCOR header/footer |
 | `dist/data-detective.h5p` | Data Detective only, without site header/footer |
 | `dist/type-sorter.h5p` | Type Sorter only, without site header/footer |

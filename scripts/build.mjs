@@ -8,6 +8,7 @@ const rootDir = path.resolve(scriptDir, "..");
 const sourcePath = path.join(rootDir, "index.html");
 const buildDir = path.join(rootDir, ".build");
 const distDir = path.join(rootDir, "dist");
+const pagesDir = path.join(buildDir, "pages");
 const assetNames = ["hescor_logo.svg", "logo_ministerium.jpg", "logo_uni-koeln.jpg"];
 
 const artifacts = [
@@ -19,7 +20,7 @@ const artifacts = [
     className: "DataLearningLab",
     mode: "combined",
     defaultGame: "detective",
-    patchVersion: 4,
+    patchVersion: 5,
     branded: true
   },
   {
@@ -30,7 +31,7 @@ const artifacts = [
     className: "DataDetective",
     mode: "detective",
     defaultGame: "detective",
-    patchVersion: 0,
+    patchVersion: 1,
     branded: false
   },
   {
@@ -41,7 +42,7 @@ const artifacts = [
     className: "MetadataExplorer",
     mode: "metadata",
     defaultGame: "metadata",
-    patchVersion: 2,
+    patchVersion: 3,
     branded: false
   },
   {
@@ -52,7 +53,7 @@ const artifacts = [
     className: "TypeSorter",
     mode: "types",
     defaultGame: "types",
-    patchVersion: 0,
+    patchVersion: 1,
     branded: false
   }
 ];
@@ -99,11 +100,50 @@ function bodyFor(mode) {
 }
 
 const css = extract(/<style>([\s\S]*?)<\/style>/, "styles");
-const sourceScript = extract(/<script>([\s\S]*?)<\/script>/, "application script")
+const siteScript = extract(/<script>([\s\S]*?)<\/script>/, "application script");
+const sourceScript = siteScript
   .replace(
     /setGameView\(location\.hash === "#type-sorter" \? "types" : location\.hash === "#metadata-explorer" \? "metadata" : "detective"\);/,
     'setGameView(params.defaultGame === "types" ? "types" : params.defaultGame === "metadata" ? "metadata" : "detective");'
   );
+
+function standalonePageFor(artifact) {
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="index,follow" />
+  <title>${artifact.title} · HESCOR Data Learning Lab</title>
+  <link rel="icon" href="../assets/hescor_logo.svg" type="image/svg+xml" />
+  <style>
+${css}
+  </style>
+</head>
+<body>
+${bodyFor(artifact.mode)}
+  <script>
+${siteScript}
+  </script>
+</body>
+</html>
+`;
+}
+
+function buildPagesSite() {
+  fs.rmSync(pagesDir, { recursive: true, force: true });
+  fs.mkdirSync(pagesDir, { recursive: true });
+  fs.copyFileSync(sourcePath, path.join(pagesDir, "index.html"));
+  copyAssets(path.join(pagesDir, "assets"));
+  fs.writeFileSync(path.join(pagesDir, ".nojekyll"), "");
+
+  for (const artifact of artifacts.filter(({ mode }) => mode !== "combined")) {
+    const routeDir = path.join(pagesDir, artifact.slug);
+    fs.mkdirSync(routeDir, { recursive: true });
+    fs.writeFileSync(path.join(routeDir, "index.html"), standalonePageFor(artifact));
+    console.log(`Built standalone page: .build/pages/${artifact.slug}/index.html`);
+  }
+}
 
 function libraryScriptFor(artifact, body) {
   return `(function (H5P, $) {
@@ -246,5 +286,6 @@ function buildH5p(artifact) {
 
 fs.mkdirSync(buildDir, { recursive: true });
 fs.mkdirSync(distDir, { recursive: true });
-console.log("Using canonical GitHub Pages source: index.html + assets/");
+console.log("Using canonical application source: index.html + assets/");
+buildPagesSite();
 for (const artifact of artifacts) buildH5p(artifact);
