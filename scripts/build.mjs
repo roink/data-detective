@@ -20,7 +20,7 @@ const artifacts = [
     className: "DataLearningLab",
     mode: "combined",
     defaultGame: "detective",
-    patchVersion: 5,
+    patchVersion: 6,
     branded: true
   },
   {
@@ -31,7 +31,7 @@ const artifacts = [
     className: "DataDetective",
     mode: "detective",
     defaultGame: "detective",
-    patchVersion: 1,
+    patchVersion: 2,
     branded: false
   },
   {
@@ -42,7 +42,7 @@ const artifacts = [
     className: "MetadataExplorer",
     mode: "metadata",
     defaultGame: "metadata",
-    patchVersion: 3,
+    patchVersion: 4,
     branded: false
   },
   {
@@ -53,7 +53,7 @@ const artifacts = [
     className: "TypeSorter",
     mode: "types",
     defaultGame: "types",
-    patchVersion: 1,
+    patchVersion: 2,
     branded: false
   }
 ];
