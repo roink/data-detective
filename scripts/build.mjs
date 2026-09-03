@@ -55,6 +55,28 @@ const artifacts = [
     defaultGame: "types",
     patchVersion: 2,
     branded: false
+  },
+  {
+    slug: "research-method",
+    title: "Research Method",
+    libraryTitle: "Research Method",
+    machineName: "H5P.ResearchMethod",
+    className: "ResearchMethod",
+    mode: "method",
+    defaultGame: "method",
+    patchVersion: 1,
+    branded: false
+  },
+  {
+    slug: "final-data-quiz",
+    title: "Final Data Quiz",
+    libraryTitle: "Final Data Quiz",
+    machineName: "H5P.FinalDataQuiz",
+    className: "FinalDataQuiz",
+    mode: "finalquiz",
+    defaultGame: "finalquiz",
+    patchVersion: 1,
+    branded: false
   }
 ];
 
@@ -82,6 +104,7 @@ function copyAssets(targetDir) {
   for (const asset of assetNames) {
     fs.copyFileSync(path.join(rootDir, "assets", asset), path.join(targetDir, asset));
   }
+  fs.cpSync(path.join(rootDir, "assets", "final-data-quiz"), path.join(targetDir, "final-data-quiz"), { recursive: true });
 }
 
 function bodyFor(mode) {
@@ -90,7 +113,7 @@ function bodyFor(mode) {
     return [
       block("header"),
       block("switcher"),
-      `<main class="page">\n${block("detective")}\n${block("types")}\n${block("metadata")}\n</main>`,
+      `<main class="page">\n${block("detective")}\n${block("types")}\n${block("metadata")}\n${block("method")}\n${block("finalquiz")}\n</main>`,
       block("footer"),
       toast
     ].join("\n\n");
@@ -103,8 +126,8 @@ const css = extract(/<style>([\s\S]*?)<\/style>/, "styles");
 const siteScript = extract(/<script>([\s\S]*?)<\/script>/, "application script");
 const sourceScript = siteScript
   .replace(
-    /setGameView\(location\.hash === "#type-sorter" \? "types" : location\.hash === "#metadata-explorer" \? "metadata" : "detective"\);/,
-    'setGameView(params.defaultGame === "types" ? "types" : params.defaultGame === "metadata" ? "metadata" : "detective");'
+    /const hashViews = \{ "#data-detective": "detective", "#type-sorter": "types", "#metadata-explorer": "metadata", "#research-method": "method", "#final-data-quiz": "finalquiz" \};\n    setGameView\(hashViews\[location\.hash\] \|\| \(el\("detectiveView"\) \? "detective" : el\("typesView"\) \? "types" : el\("metadataView"\) \? "metadata" : el\("methodView"\) \? "method" : "finalquiz"\)\);/,
+    'setGameView(params.defaultGame || (el("detectiveView") ? "detective" : el("typesView") ? "types" : el("metadataView") ? "metadata" : el("methodView") ? "method" : "finalquiz"));'
   );
 
 function standalonePageFor(artifact) {
@@ -174,6 +197,7 @@ function libraryScriptFor(artifact, body) {
     wrapper.innerHTML = ${JSON.stringify(body)};
 
     var libraryPath = H5P.getLibraryPath("${artifact.machineName}-1.0");
+    wrapper.dataset.assetRoot = libraryPath;
     wrapper.querySelectorAll('img[src^="assets/"]').forEach(function (image) {
       image.src = libraryPath + "/" + image.getAttribute("src");
     });
@@ -232,8 +256,8 @@ function buildH5p(artifact) {
   writeJson(path.join(libraryDir, "library.json"), {
     title: artifact.libraryTitle,
     description: artifact.mode === "combined"
-      ? "Three interactive games for learning data quality, variable types and metadata."
-      : `An interactive game for learning ${artifact.mode === "detective" ? "data quality" : artifact.mode === "types" ? "variable types" : "metadata"}.`,
+      ? "Five interactive games for learning data quality, variable types, metadata and research data practice."
+      : `An interactive game for learning ${artifact.mode === "detective" ? "data quality" : artifact.mode === "types" ? "variable types" : artifact.mode === "metadata" ? "metadata" : artifact.mode === "method" ? "the research process" : "data literacy"}.`,
     machineName: artifact.machineName,
     majorVersion: 1,
     minorVersion: 0,
@@ -252,11 +276,13 @@ function buildH5p(artifact) {
     name: "defaultGame",
     type: "select",
     label: "Game shown first",
-    description: "Players can switch between all three games after opening the activity.",
+    description: "Players can switch between all five games after opening the activity.",
     options: [
       { value: "detective", label: "Data Detective" },
       { value: "types", label: "Type Sorter" },
-      { value: "metadata", label: "Metadata Explorer" }
+      { value: "metadata", label: "Metadata Explorer" },
+      { value: "method", label: "Research Method" },
+      { value: "finalquiz", label: "Final Data Quiz" }
     ],
     default: artifact.defaultGame
   }] : [];
@@ -264,7 +290,7 @@ function buildH5p(artifact) {
 
   fs.writeFileSync(path.join(libraryDir, "app.css"), `${css}\n`);
   fs.writeFileSync(path.join(libraryDir, "app.js"), libraryScriptFor(artifact, bodyFor(artifact.mode)));
-  if (artifact.branded) copyAssets(path.join(libraryDir, "assets"));
+  if (artifact.branded || artifact.mode === "finalquiz") copyAssets(path.join(libraryDir, "assets"));
 
   fs.rmSync(outputPath, { force: true });
   execFileSync(

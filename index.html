@@ -533,7 +533,7 @@
       width: min(1240px, calc(100vw - 40px));
       margin: -22px auto 0;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       background: white;
       border: 1px solid var(--line);
       box-shadow: var(--shadow);
@@ -700,6 +700,74 @@
     .metadata-guide li { color: var(--muted); margin: 9px 0; padding-left: 20px; position: relative; font-size: .88rem; }
     .metadata-guide li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-weight: 900; }
 
+    /* Research Method and Final Data Quiz */
+    .review-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start; }
+    .review-board { min-width: 0; border-top: 4px solid var(--cyan); }
+    .review-head { padding: 22px 24px 18px; border-bottom: 1px solid var(--line); }
+    .review-headline { display: flex; justify-content: space-between; align-items: start; gap: 18px; }
+    .review-head h3 { margin: 3px 0 6px; color: var(--blue); font-size: clamp(1.35rem, 2.4vw, 2rem); }
+    .review-head p { margin: 0; color: var(--muted); line-height: 1.45; }
+    .review-workspace { padding: 20px 22px 24px; }
+    .review-copy { color: var(--ink); line-height: 1.75; font-size: 1rem; }
+    .method-inline-slot { display: inline-grid; min-width: 142px; margin: 0 3px; padding: 3px 10px; transform: none; border: 2px dashed #8ebdcc; border-radius: 4px; background: #f6fbfc; color: var(--blue); font: inherit; font-weight: 850; line-height: 1.25; vertical-align: baseline; box-shadow: none; }
+    .method-inline-slot:hover, .method-inline-slot.dragover { transform: none; border-color: var(--accent); background: var(--accent-soft); box-shadow: none; }
+    .method-inline-slot:disabled { opacity: 1; transform: none; cursor: default; }
+    .method-inline-slot.correct { border: 2px solid var(--good); background: #d8f3e2; color: #075c2b; box-shadow: 0 0 0 3px rgba(21,122,63,.16); }
+    .method-inline-slot.incorrect { border: 2px solid var(--bad); background: #ffe0dc; color: #8f180f; box-shadow: 0 0 0 3px rgba(180,35,24,.15); }
+    .method-word-cards { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .method-word-card { min-width: 142px; min-height: 42px; padding: 7px 10px; border: 2px solid #a9d1dc; border-top: 5px solid var(--cyan); background: white; color: var(--blue); font-weight: 850; cursor: grab; }
+    .method-word-card:active { cursor: grabbing; }
+    .method-word-card.selected { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 5px 0 var(--accent-soft); }
+    .review-feedback { min-height: 72px; margin-top: 18px; padding: 14px 16px; border-left: 5px solid var(--cyan); background: var(--cyan-soft); line-height: 1.45; }
+    .review-feedback.good { border-color: var(--good); background: var(--good-soft); }
+    .review-feedback.bad { border-color: var(--accent); background: var(--accent-soft); }
+    .review-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px; }
+    .review-actions .button-row { justify-content: flex-end; }
+    .review-status { color: var(--muted); font-size: .9rem; font-weight: 700; }
+    .review-guide { position: sticky; top: 18px; padding: 20px; border-top: 4px solid var(--cyan); }
+    .review-guide h3 { margin-bottom: 8px; color: var(--blue); font-size: 1.05rem; }
+    .review-guide p, .review-guide li { color: var(--muted); font-size: .9rem; line-height: 1.45; }
+    .review-guide ul { margin: 12px 0 0; padding-left: 18px; }
+    .quiz-media { display: block; width: min(100%, 560px); max-height: 220px; margin: 0 auto 18px; object-fit: contain; }
+    .quiz-prompt { margin: 0 0 14px; color: var(--blue); font-size: 1.08rem; font-weight: 850; line-height: 1.45; }
+    .quiz-choices { display: grid; gap: 9px; }
+    .quiz-choice { display: flex; align-items: flex-start; gap: 11px; padding: 12px 14px; border: 2px solid #a9d1dc; border-left: 5px solid var(--cyan); background: white; color: var(--ink); text-align: left; cursor: pointer; }
+    .quiz-choice:hover { border-color: var(--accent); box-shadow: 0 5px 0 var(--accent-soft); }
+    .quiz-choice input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--accent); flex: 0 0 auto; }
+    .quiz-choice.correct { border-color: var(--good); background: var(--good-soft); }
+    .quiz-choice.incorrect { border-color: var(--accent); background: var(--accent-soft); }
+    .quiz-choice.missed { border-color: var(--warn); border-left-color: var(--warn); background: var(--warn-soft); }
+    .quiz-choice.missed::after { content: "Correct answer not selected"; margin-left: auto; color: var(--warn); font-size: .76rem; font-weight: 850; text-align: right; }
+    .true-false { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .true-false button { min-height: 76px; border: 2px solid #a9d1dc; border-top: 5px solid var(--cyan); background: white; color: var(--blue); font-size: 1.05rem; font-weight: 850; }
+    .true-false button.selected { border-color: var(--accent); background: var(--accent-soft); }
+    .true-false button.correct { border-color: var(--good); background: var(--good-soft); }
+    .true-false button.incorrect { border-color: var(--accent); background: var(--accent-soft); }
+    .lifecycle-stage { position: relative; width: min(100%, 660px); aspect-ratio: 1; margin: 0 auto 18px; background: #fff; overflow: hidden; }
+    .lifecycle-stage img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    .lifecycle-zone { position: absolute; width: 16%; min-height: 36px; padding: 3px 5px; transform: translate(-50%, -50%); border: 2px dashed var(--blue); border-radius: 4px; background: rgba(255,255,255,.94); color: var(--blue); font-size: clamp(.58rem, 1.5vw, .82rem); font-weight: 850; line-height: 1.05; text-align: center; box-shadow: none; transition: border-color .12s ease, background-color .12s ease, box-shadow .12s ease; }
+    .lifecycle-zone.dragover, .lifecycle-zone:hover, .lifecycle-zone:active, .lifecycle-zone:disabled, .lifecycle-zone:disabled:hover, .lifecycle-zone:disabled:active { transform: translate(-50%, -50%); }
+    .lifecycle-zone.dragover, .lifecycle-zone:hover { border-color: var(--accent); background: var(--accent-soft); box-shadow: none; }
+    .lifecycle-zone:disabled { opacity: 1; cursor: default; }
+    .lifecycle-zone.correct, .quiz-fill-slot.correct, .quiz-inline-slot.correct { opacity: 1; border: 2px solid var(--good); background: #d8f3e2; color: #075c2b; box-shadow: 0 0 0 3px rgba(21,122,63,.16); }
+    .lifecycle-zone.incorrect, .quiz-fill-slot.incorrect, .quiz-inline-slot.incorrect { opacity: 1; border: 2px solid var(--bad); background: #ffe0dc; color: #8f180f; box-shadow: 0 0 0 3px rgba(180,35,24,.15); }
+    .lifecycle-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+    .lifecycle-card { min-height: 54px; padding: 8px; border: 2px solid #a9d1dc; border-top: 5px solid var(--cyan); background: white; color: var(--blue); font-size: .83rem; font-weight: 800; cursor: grab; }
+    .lifecycle-card.selected { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 5px 0 var(--accent-soft); }
+    .quiz-fill-slots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+    .quiz-fill-slot { min-height: 78px; padding: 13px; border: 2px dashed #8ebdcc; background: #f6fbfc; color: var(--blue); text-align: left; box-shadow: none; }
+    .quiz-fill-slot small { display: block; margin-top: 4px; color: var(--muted); font-size: .82rem; }
+    .quiz-inline-slot { display: inline-grid; min-width: 116px; margin: 0 3px; padding: 3px 10px; transform: none; border: 2px dashed #8ebdcc; border-radius: 4px; background: #f6fbfc; color: var(--blue); font: inherit; font-weight: 850; line-height: 1.25; vertical-align: baseline; box-shadow: none; }
+    .quiz-inline-slot:hover, .quiz-inline-slot.dragover { transform: none; border-color: var(--accent); background: var(--accent-soft); box-shadow: none; }
+    .quiz-inline-slot:disabled { opacity: 1; transform: none; cursor: default; }
+    .true-false button.correct:disabled, .true-false button.incorrect:disabled { opacity: 1; }
+    .true-false button.correct { border-color: var(--good); background: #d8f3e2; color: #075c2b; box-shadow: 0 0 0 3px rgba(21,122,63,.16); }
+    .true-false button.incorrect { border-color: var(--bad); background: #ffe0dc; color: #8f180f; box-shadow: 0 0 0 3px rgba(180,35,24,.15); }
+    .quiz-fill-cards { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .quiz-fill-card { width: 116px; min-height: 42px; padding: 7px 10px; border: 2px solid #a9d1dc; border-top: 5px solid var(--cyan); background: white; color: var(--blue); font-weight: 850; cursor: grab; }
+    .quiz-fill-card:active { cursor: grabbing; }
+    .quiz-fill-card.selected { border-color: var(--accent); background: var(--accent-soft); }
+
     .brand-footer { background: white; border-top: 10px solid #e9eeee; }
     .brand-footer__inner { padding: 34px 0 26px; }
     .funders { display: flex; justify-content: space-between; align-items: center; gap: 38px; }
@@ -714,8 +782,8 @@
     @media (max-width: 900px) {
       .site-header { min-height: 0; }
       .game-intro { align-items: flex-start; flex-direction: column; }
-      .layout, .type-layout, .metadata-layout { grid-template-columns: 1fr; }
-      .concept-card, .metadata-guide { position: static; }
+      .layout, .type-layout, .metadata-layout, .review-layout { grid-template-columns: 1fr; }
+      .concept-card, .metadata-guide, .review-guide { position: static; }
       .variable-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .type-bins { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .funders { align-items: flex-start; flex-direction: column; }
@@ -731,8 +799,8 @@
       .game-tab + .game-tab { border-left: 0; border-top: 1px solid var(--line); }
       .game-intro .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); width: 100%; }
       .pill { text-align: center; padding: 7px 8px; }
-      .round-head, .type-head, .metadata-head, .type-workspace, .metadata-workspace, .table-wrap { padding-left: 15px; padding-right: 15px; }
-      .round-title-row, .type-headline, .metadata-headline { flex-direction: column; }
+      .round-head, .type-head, .metadata-head, .review-head, .type-workspace, .metadata-workspace, .review-workspace, .table-wrap { padding-left: 15px; padding-right: 15px; }
+      .round-title-row, .type-headline, .metadata-headline, .review-headline { flex-direction: column; }
       .variable-cards { grid-template-columns: 1fr; }
       .type-bins { grid-template-columns: 1fr 1fr; }
       .type-bin { min-height: 110px; }
@@ -740,6 +808,9 @@
       .codebook-grid { grid-template-columns: 1fr; }
       .record-fields { grid-template-columns: 1fr; }
       .dataset-comparison { grid-template-columns: 1fr; }
+      .lifecycle-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .quiz-fill-slots, .quiz-fill-cards { grid-template-columns: 1fr; }
+      .review-actions { align-items: flex-start; flex-direction: column; }
       .logo-row { align-items: flex-start; flex-direction: column; gap: 24px; }
       .ministry-logo { width: 270px; max-width: 100%; }
       .uni-logo { width: 145px; max-width: 100%; }
@@ -768,6 +839,12 @@
     </button>
     <button class="game-tab" id="metadataTab" role="tab" aria-controls="metadataView" aria-selected="false">
       <span class="tab-number">03</span> Metadata Explorer
+    </button>
+    <button class="game-tab" id="methodTab" role="tab" aria-controls="methodView" aria-selected="false">
+      <span class="tab-number">04</span> Research Method
+    </button>
+    <button class="game-tab" id="finalQuizTab" role="tab" aria-controls="finalQuizView" aria-selected="false">
+      <span class="tab-number">05</span> Final Data Quiz
     </button>
   </nav>
   <!-- build:switcher:end -->
@@ -969,6 +1046,52 @@
       </div>
     </section>
     <!-- build:metadata:end -->
+
+    <!-- build:method:start -->
+    <section id="methodView" class="game-view" role="tabpanel" aria-labelledby="methodTab" hidden>
+      <div class="game-intro">
+        <div>
+          <h2>Research Method</h2>
+          <p>Fill in the missing words to trace how research moves from a question to outreach.</p>
+        </div>
+        <div class="stats" aria-live="polite">
+          <div class="pill">Score <span id="methodScore">0</span>/12</div>
+        </div>
+      </div>
+      <div class="review-layout">
+        <section class="card review-board">
+          <div class="review-head">
+            <div class="review-headline">
+              <div><p class="eyebrow" style="color:var(--accent)">Review of Scientific Method</p><h3>How is data collected through research?</h3><p>Fill in the missing words.</p></div>
+            </div>
+          </div>
+          <div id="methodWorkspace" class="review-workspace" aria-live="polite"></div>
+          <div id="methodFeedback" class="review-feedback" role="status" aria-live="polite"><strong>Ready?</strong> Use the word bank to complete every blank.</div>
+          <div class="review-actions"><span id="methodStatus" class="review-status">Complete the paragraph, then check your answers.</span><div class="button-row"><button id="methodSolutionBtn" class="secondary">Show solution</button><button id="methodRetryBtn" class="secondary">Retry</button><button id="methodCheckBtn">Check</button></div></div>
+        </section>
+        <aside class="card review-guide"><h3>Hints</h3><p>Read the whole sentence around each gap before choosing a card. Its grammar and place in the overall journey will narrow down the options.</p><ul><li>Start with the gaps whose context is most distinctive</li><li>Follow the journey from setup to communication</li><li>Some closely related cards can fit either of two gaps</li><li>Each card is used once</li></ul></aside>
+      </div>
+    </section>
+    <!-- build:method:end -->
+
+    <!-- build:finalquiz:start -->
+    <section id="finalQuizView" class="game-view" role="tabpanel" aria-labelledby="finalQuizTab" hidden>
+      <div class="game-intro">
+        <div><h2>Final Data Quiz</h2><p>Review the data lifecycle, data types, metadata and responsible reuse.</p></div>
+        <div class="stats" aria-live="polite"><div class="pill">Question <span id="finalQuizNow">1</span>/<span id="finalQuizTotal">8</span></div><div class="pill">Score <span id="finalQuizScore">0</span>/<span id="finalQuizMax">22</span></div></div>
+      </div>
+      <div id="finalQuizGame" class="review-layout">
+        <section class="card review-board">
+          <div class="review-head"><div class="review-headline"><div><p id="finalQuizKicker" class="eyebrow" style="color:var(--accent)">Question 1 · Data lifecycle</p><h3 id="finalQuizTitle">Place the lifecycle labels</h3><p id="finalQuizInstruction">Select a label, then click its matching place on the lifecycle. You can also drag it.</p></div><div class="pill"><span id="finalQuizPoints">0</span>/<span id="finalQuizQuestionMax">7</span> points</div></div></div>
+          <div id="finalQuizWorkspace" class="review-workspace" aria-live="polite"></div>
+          <div id="finalQuizFeedback" class="review-feedback" role="status" aria-live="polite"><strong>Ready?</strong> Answer the question, then check your work.</div>
+          <div class="review-actions"><span id="finalQuizStatus" class="review-status"></span><div class="button-row"><button id="finalQuizSolutionBtn" class="secondary">Show solution</button><button id="finalQuizRetryBtn" class="secondary">Try again</button><button id="finalQuizCheckBtn">Check</button><button id="finalQuizNextBtn" disabled>Next question</button></div></div>
+        </section>
+        <aside class="card review-guide"><h3 id="finalQuizGuideTitle">How scoring works</h3><p id="finalQuizGuideText">Some questions have more than one correct answer. Select every answer you believe is correct before checking.</p><ul id="finalQuizGuideList"><li>Selected correct options add points</li><li>Selected incorrect options subtract points</li><li>The score for a question cannot fall below zero</li></ul></aside>
+      </div>
+      <div id="finalQuizCompletion" class="card type-completion hidden"><p class="eyebrow" style="color:var(--accent)">Quiz complete</p><h3>Your result: <span id="finalQuizResult">0</span>/22</h3><p id="finalQuizResultText">Review the solutions or try the quiz again to strengthen your data literacy.</p><div class="button-row" style="justify-content:center"><button id="finalQuizReviewBtn" class="secondary">Review solutions</button><button id="finalQuizRestartBtn">Try again</button></div></div>
+    </section>
+    <!-- build:finalquiz:end -->
   </main>
 
   <!-- build:footer:start -->
@@ -1313,6 +1436,11 @@
     let usedHints = new Set();
 
     const el = id => document.getElementById(id);
+    function gameAsset(path) {
+      const h5pRoot = document.querySelector(".h5p-data-learning-lab[data-asset-root]");
+      if (h5pRoot) return `${h5pRoot.dataset.assetRoot}/${path}`;
+      return document.querySelector(".page--isolated") ? `../${path}` : path;
+    }
     const game = el("game");
     const completion = el("completion");
     const table = el("dataTable");
@@ -1610,19 +1738,29 @@
       const detectiveView = el("detectiveView");
       const typesView = el("typesView");
       const metadataView = el("metadataView");
+      const methodView = el("methodView");
+      const finalQuizView = el("finalQuizView");
       const hasDetective = Boolean(detectiveView);
       const hasTypes = Boolean(typesView);
       const hasMetadata = Boolean(metadataView);
-      const active = view === "metadata" && hasMetadata ? "metadata" : view === "types" && hasTypes ? "types" : hasDetective ? "detective" : hasTypes ? "types" : "metadata";
+      const hasMethod = Boolean(methodView);
+      const hasFinalQuiz = Boolean(finalQuizView);
+      const available = [hasDetective && "detective", hasTypes && "types", hasMetadata && "metadata", hasMethod && "method", hasFinalQuiz && "finalquiz"].filter(Boolean);
+      const active = available.includes(view) ? view : available[0];
       const isDetective = active === "detective";
       if (detectiveView) detectiveView.hidden = !isDetective;
       if (typesView) typesView.hidden = active !== "types";
       if (metadataView) metadataView.hidden = active !== "metadata";
+      if (methodView) methodView.hidden = active !== "method";
+      if (finalQuizView) finalQuizView.hidden = active !== "finalquiz";
       if (el("detectiveTab")) el("detectiveTab").setAttribute("aria-selected", String(isDetective));
       if (el("typesTab")) el("typesTab").setAttribute("aria-selected", String(active === "types"));
       if (el("metadataTab")) el("metadataTab").setAttribute("aria-selected", String(active === "metadata"));
-      if ([hasDetective, hasTypes, hasMetadata].filter(Boolean).length > 1) {
-        history.replaceState(null, "", active === "detective" ? "#data-detective" : active === "types" ? "#type-sorter" : "#metadata-explorer");
+      if (el("methodTab")) el("methodTab").setAttribute("aria-selected", String(active === "method"));
+      if (el("finalQuizTab")) el("finalQuizTab").setAttribute("aria-selected", String(active === "finalquiz"));
+      if (available.length > 1) {
+        const hashes = { detective: "#data-detective", types: "#type-sorter", metadata: "#metadata-explorer", method: "#research-method", finalquiz: "#final-data-quiz" };
+        history.replaceState(null, "", hashes[active]);
       }
     }
 
@@ -1996,6 +2134,177 @@
     function startMetadataGame() { metadataLevel = 0; metadataScore = 0; el("metadataGame").classList.remove("hidden"); el("metadataCompletion").classList.add("hidden"); renderMetadataLevel(); }
     function nextMetadataLevel() { if (metadataLevel < metadataLevels.length - 1) { metadataLevel += 1; renderMetadataLevel(); } else { el("metadataGame").classList.add("hidden"); el("metadataCompletion").classList.remove("hidden"); } }
 
+    const methodBlanks = [
+      ["research question", "question"], ["data collection"], ["data types"], ["raw"], ["processing", "cleaning"], ["cleaning", "processing"], ["noise"], ["writing"], ["publication"], ["peer review"], ["FAIR Principles"], ["outreach"]
+    ];
+    const methodWordCards = ["cleaning", "data types", "outreach", "raw", "writing", "publication", "processing", "peer review", "data collection", "research question", "noise", "FAIR Principles"];
+    let methodChecked = false, methodPlacements = {}, methodSelected = null;
+    function methodText(workspace, text) { workspace.append(document.createTextNode(text)); }
+    function methodBlank(workspace, index) {
+      const value = methodPlacements[index];
+      const slot = document.createElement("button"); slot.type = "button"; slot.className = "method-inline-slot"; slot.textContent = value || "___"; slot.disabled = methodChecked; slot.setAttribute("aria-label", `Blank ${index + 1} of ${methodBlanks.length}`);
+      slot.classList.toggle("correct", methodChecked && methodBlanks[index].includes(value)); slot.classList.toggle("incorrect", methodChecked && Boolean(value) && !methodBlanks[index].includes(value));
+      const placed = new Set(Object.values(methodPlacements));
+      const place = label => { if (!label || methodChecked || placed.has(label)) return; methodPlacements[index] = label; methodSelected = null; renderMethodGame(); };
+      slot.addEventListener("click", () => { if (value && !methodChecked) { delete methodPlacements[index]; renderMethodGame(); } else place(methodSelected); });
+      slot.addEventListener("dragover", event => { event.preventDefault(); slot.classList.add("dragover"); }); slot.addEventListener("dragleave", () => slot.classList.remove("dragover")); slot.addEventListener("drop", event => { event.preventDefault(); slot.classList.remove("dragover"); place(event.dataTransfer.getData("text/plain")); }); workspace.append(slot);
+    }
+    function renderMethodGame() {
+      const workspace = el("methodWorkspace"); workspace.replaceChildren();
+      const paragraph = document.createElement("p"); paragraph.className = "review-copy";
+      const add = text => methodText(paragraph, text), blank = index => methodBlank(paragraph, index);
+      add("While data can be collected passively, like many websites that collect data as we scroll through the internet, in research, the process typically begins with the formation of a "); blank(0);
+      add(". In order to answer a research question, you then plan your "); blank(1);
+      add(" based on the kind of data needed (such as qualitative, quantitative, etc.) and review existing literature and prior work to see what’s already known. Different fields such as the humanities, social sciences, or natural sciences typically have different, standard "); blank(2);
+      add(". Once you've established a solid background, you then decide which measurements, surveys, reviews, or experiments will generate the evidence you need. After gathering "); blank(3);
+      add(" or unprocessed data, you conduct analysis in which you turn numbers, observations, and notes into meaningful patterns and conclusions by "); blank(4);
+      add(" and "); blank(5);
+      add(" the data. This phase is absolutely critical as all data requires reflection based off of inherent "); blank(6);
+      add(" or randomness from imperfect measurements, calculations, and observations. During the following "); blank(7);
+      add(" process, you ensure your data is appropriately preserved and organize your ideas, craft figures, and write a manuscript that clearly conveys your data-based discoveries. Once the manuscript is polished, you aim for "); blank(8);
+      add(", submitting it to a journal, repository, or conference so the broader community can evaluate and build on your work through the process of "); blank(9);
+      add(". Researchers are expected to share their data based on the "); blank(10);
+      add(" which aim to make all data Findable, Accessible, Interoperable, and Reproducible for a more accountable research process. Finally, you consider "); blank(11);
+      add(", thinking about how to share the findings beyond academia. Either through talks, media outreach, or other channels that maximize impact.");
+      const placed = new Set(Object.values(methodPlacements));
+      const cards = document.createElement("div"); cards.className = "method-word-cards";
+      methodWordCards.filter(label => !placed.has(label)).forEach(label => {
+        const card = document.createElement("button"); card.type = "button"; card.className = "method-word-card"; card.textContent = label; card.disabled = methodChecked; card.draggable = !methodChecked; card.classList.toggle("selected", methodSelected === label);
+        card.addEventListener("dragstart", event => { methodSelected = label; event.dataTransfer.setData("text/plain", label); event.dataTransfer.effectAllowed = "move"; }); card.addEventListener("click", () => { methodSelected = methodSelected === label ? null : label; renderMethodGame(); }); cards.append(card);
+      });
+      workspace.append(paragraph, cards);
+    }
+    function methodSetFeedback(message, state = "") { const feedback = el("methodFeedback"); feedback.className = `review-feedback ${state}`; feedback.innerHTML = message; }
+    function checkMethodGame() {
+      let solved = 0, filled = 0;
+      methodBlanks.forEach((answers, index) => { const value = methodPlacements[index]; if (value) filled += 1; if (answers.includes(value)) solved += 1; });
+      methodChecked = true; if (el("methodSolved")) el("methodSolved").textContent = solved; el("methodScore").textContent = solved;
+      renderMethodGame();
+      if (filled < methodBlanks.length) methodSetFeedback(`<strong>${solved} of ${methodBlanks.length} correct.</strong> Complete every blank, then try again.`, "bad");
+      else if (solved === methodBlanks.length) methodSetFeedback("<strong>Excellent.</strong> You traced the whole research journey from a question to outreach.", "good");
+      else methodSetFeedback(`<strong>${solved} of ${methodBlanks.length} correct.</strong> The highlighted blanks need another look.`, "bad");
+      el("methodStatus").textContent = solved === methodBlanks.length ? "All blanks complete." : "Use Retry to revise your answers.";
+    }
+    function showMethodSolution() {
+      methodPlacements = Object.fromEntries(methodBlanks.map((answers, index) => [index, answers[0]])); methodSelected = null; methodChecked = true; renderMethodGame();
+      if (el("methodSolved")) el("methodSolved").textContent = methodBlanks.length; el("methodScore").textContent = methodBlanks.length;
+      methodSetFeedback("<strong>Solution shown.</strong> Notice how planning, preservation, publication and FAIR sharing all contribute to a reusable research record.", "good"); el("methodStatus").textContent = "Solution shown — use Retry to practise again.";
+    }
+    function startMethodGame() { methodChecked = false; methodPlacements = {}; methodSelected = null; renderMethodGame(); if (el("methodSolved")) el("methodSolved").textContent = "0"; if (el("methodTotal")) el("methodTotal").textContent = methodBlanks.length; el("methodScore").textContent = "0"; methodSetFeedback("<strong>Ready?</strong> Drag a word card into a gap, or select a card then click a gap."); el("methodStatus").textContent = "Complete the paragraph, then check your answers."; }
+
+    const finalQuizQuestions = [
+      { type: "lifecycle", kicker: "Question 1 · Data lifecycle", title: "Place the lifecycle labels", instruction: "Select a label, then click its matching place on the lifecycle. You can also drag it.", max: 7, guide: ["Think about the sequence from preparing an investigation to making its results useful to others.", ["Follow the process around the circle", "Use the icons as clues", "Each label is used once"]], stages: [
+        ["plan", "Plan and Review", 71, 22], ["collect", "Collect", 86, 49], ["process", "Process", 76, 81], ["analyze", "Analyze", 47, 93], ["preserve", "Preserve", 20, 72], ["share", "Publish and Share", 16, 42], ["reuse", "Reuse", 42, 19]
+      ] },
+      { type: "multi", kicker: "Question 2 · Preserve", title: "Choose every preservation step", instruction: "Important steps in the PRESERVE part of the data life cycle include:", media: "assets/final-data-quiz/preserve.png", max: 5, guide: ["Think about work that makes a dataset consistent, traceable and useful over time.", ["Look for preparation and quality tasks", "Separate communication from preparation", "More than one option may fit"]], options: [["Ensuring standard units or formats", true], ["Looking for outliers in the data", true], ["Checking for consistent spelling and capitalization", true], ["Finding any missing data points", true], ["Ensuring data points have unique identifiers", true], ["Sharing data with colleagues", false]] },
+      { type: "truefalse", kicker: "Question 3 · Missing values", title: "NA stands for Not Assigned or Not Available", instruction: "Choose true or false.", media: "assets/final-data-quiz/not-available.jpg", max: 1, answer: true, guide: ["Consider whether this abbreviation describes a measurement or signals something about the record itself.", ["Missingness needs documentation", "Markers are not measurements", "Conventions can vary between projects"]] },
+      { type: "multi", kicker: "Question 4 · Data types", title: "Identify ordinal data", instruction: "Which of the following are characteristics of ordinal data?", media: "assets/final-data-quiz/ordinal.png", max: 2, guide: ["Ask whether the values can be ranked, and whether the distance between ranks has a fixed meaning.", ["Think about ordering", "Think about groups versus quantities", "More than one option may fit"]], options: [["They are numbers", false], ["They are categories", true], ["They have only two possible states", false], ["They have meaningful order", true], ["They are text", false]] },
+      { type: "truefalse", kicker: "Question 5 · Data types", title: "Binary data have only two possible states", instruction: "Choose true or false.", media: "assets/final-data-quiz/binary.jpg", max: 1, answer: true, guide: ["Focus on how many distinct states the variable can take, rather than how those states are written.", ["Count the possible states", "Do not confuse labels with quantities", "Context defines the values"]] },
+      { type: "multi", kicker: "Question 6 · Data types", title: "Identify numerical data", instruction: "Which of the following are numerical data?", media: "assets/final-data-quiz/numerical.jpg", max: 3, guide: ["A value can contain digits without representing a quantity. Ask whether arithmetic would make sense.", ["Consider what the value represents", "Digits can also be identifiers", "More than one option may fit"]], options: [["Seven", false], ["3.1514", true], ["2nd", false], ["1974", true], ["02/03/2026", true], ["05789 (Zipcode)", false]] },
+      { type: "data-metadata", kicker: "Question 7 · Context", title: "Complete the definitions", instruction: "Drag the words into the correct boxes, or select a word then click a box.", max: 2, guide: ["One term names what was observed or recorded; the other names information that helps someone interpret it.", ["Read the role each blank plays", "Look for observations versus context", "Both are needed for reuse"]] },
+      { type: "multi", kicker: "Question 8 · Reuse", title: "Define licensing", instruction: "Licensing is:", max: 1, guide: ["Distinguish rules about using a work from activities such as storing, checking or technically formatting it.", ["Think about rights and conditions", "Rule out process descriptions", "More than one option may fit"]], options: [["The process of physically storing and backing up data to prevent loss.", false], ["The formal grant of permission that specifies how a piece of data, software, or other work may be used, shared, modified, or redistributed by others.", true], ["A technical standard that ensures different software programs can exchange and interpret data in a common format.", false], ["The process of verifying the accuracy and completeness of a dataset before it is published or shared.", false]] }
+    ];
+    let finalQuizQuestion = 0, finalQuizResponses = [], finalQuizScores = [], finalQuizChecked = [], finalQuizSelected = null;
+    const finalQuizMax = finalQuizQuestions.reduce((sum, question) => sum + question.max, 0);
+    function currentFinalResponse() { return finalQuizResponses[finalQuizQuestion] || (finalQuizResponses[finalQuizQuestion] = {}); }
+    function finalQuizScore() { return finalQuizScores.reduce((sum, value) => sum + (value || 0), 0); }
+    function updateFinalQuizStats() { el("finalQuizNow").textContent = finalQuizQuestion + 1; el("finalQuizTotal").textContent = finalQuizQuestions.length; el("finalQuizScore").textContent = finalQuizScore(); el("finalQuizMax").textContent = finalQuizMax; }
+    function finalQuizFeedback(message, state = "") { const feedback = el("finalQuizFeedback"); feedback.className = `review-feedback ${state}`; feedback.innerHTML = message; }
+    function finalQuizSelectionCard(label, selected, onClick, draggable = false) {
+      const card = document.createElement("button"); card.type = "button"; card.className = "lifecycle-card"; card.textContent = label; card.classList.toggle("selected", selected); card.disabled = finalQuizChecked[finalQuizQuestion];
+      if (draggable) { card.draggable = !card.disabled; card.addEventListener("dragstart", event => { finalQuizSelected = label; event.dataTransfer.setData("text/plain", label); }); }
+      card.addEventListener("click", onClick); return card;
+    }
+    function renderLifecycleQuestion(question, workspace) {
+      const response = currentFinalResponse(); response.placements ||= {};
+      const stage = document.createElement("div"); stage.className = "lifecycle-stage";
+      const image = document.createElement("img"); image.src = gameAsset("assets/final-data-quiz/lifecycle.png"); image.alt = "Data lifecycle diagram"; stage.append(image);
+      const placed = new Set(Object.values(response.placements));
+      question.stages.forEach(([id, label, x, y]) => {
+        const zone = document.createElement("button"); zone.type = "button"; zone.className = "lifecycle-zone"; zone.style.left = `${x}%`; zone.style.top = `${y}%`; const placedLabel = response.placements[id]; const checked = finalQuizChecked[finalQuizQuestion]; zone.textContent = placedLabel || "?"; zone.classList.toggle("correct", checked && placedLabel === label); zone.classList.toggle("incorrect", checked && Boolean(placedLabel) && placedLabel !== label); zone.disabled = checked;
+        const place = value => { if (!value || finalQuizChecked[finalQuizQuestion] || placed.has(value)) return; response.placements[id] = value; finalQuizSelected = null; renderFinalQuizQuestion(); };
+        zone.addEventListener("click", () => { if (placedLabel && !finalQuizChecked[finalQuizQuestion]) { delete response.placements[id]; renderFinalQuizQuestion(); } else place(finalQuizSelected); }); zone.addEventListener("dragover", event => { event.preventDefault(); zone.classList.add("dragover"); }); zone.addEventListener("dragleave", () => zone.classList.remove("dragover")); zone.addEventListener("drop", event => { event.preventDefault(); zone.classList.remove("dragover"); place(event.dataTransfer.getData("text/plain")); }); stage.append(zone);
+      });
+      const cards = document.createElement("div"); cards.className = "lifecycle-cards";
+      question.stages.filter(([, label]) => !placed.has(label)).forEach(([, label]) => cards.append(finalQuizSelectionCard(label, finalQuizSelected === label, () => { finalQuizSelected = finalQuizSelected === label ? null : label; renderFinalQuizQuestion(); }, true)));
+      workspace.append(stage, cards);
+    }
+    function renderMultiQuestion(question, workspace) {
+      const response = currentFinalResponse(); response.selected ||= [];
+      response.order ||= question.options.map((_, index) => index).sort(() => Math.random() - .5);
+      const choices = document.createElement("div"); choices.className = "quiz-choices";
+      response.order.forEach(index => {
+        const [label, correct] = question.options[index];
+        const choice = document.createElement("label"); choice.className = "quiz-choice"; const input = document.createElement("input"); input.type = "checkbox"; input.checked = response.selected.includes(index); input.disabled = finalQuizChecked[finalQuizQuestion];
+        input.addEventListener("change", () => { response.selected = question.options.map((_, optionIndex) => optionIndex).filter(optionIndex => choices.querySelector(`input[data-option=\"${optionIndex}\"]`).checked); }); input.dataset.option = String(index);
+        const text = document.createElement("span"); text.textContent = label; choice.append(input, text);
+        if (finalQuizChecked[finalQuizQuestion]) { choice.classList.toggle("correct", input.checked && correct); choice.classList.toggle("incorrect", input.checked && !correct); choice.classList.toggle("missed", !input.checked && correct); }
+        choices.append(choice);
+      }); workspace.append(choices);
+    }
+    function renderTrueFalseQuestion(question, workspace) {
+      const response = currentFinalResponse(); const options = document.createElement("div"); options.className = "true-false";
+      [[true, "True"], [false, "False"]].forEach(([value, label]) => { const button = document.createElement("button"); button.type = "button"; button.textContent = label; button.disabled = finalQuizChecked[finalQuizQuestion]; button.classList.toggle("selected", response.value === value); button.classList.toggle("correct", finalQuizChecked[finalQuizQuestion] && value === question.answer); button.classList.toggle("incorrect", finalQuizChecked[finalQuizQuestion] && response.value === value && value !== question.answer); button.addEventListener("click", () => { response.value = value; renderFinalQuizQuestion(); }); options.append(button); }); workspace.append(options);
+    }
+    function renderDataMetadataQuestion(question, workspace) {
+      const response = currentFinalResponse(); response.placements ||= {};
+      const checked = finalQuizChecked[finalQuizQuestion], placed = new Set(Object.values(response.placements));
+      const copy = document.createElement("p"); copy.className = "review-copy";
+      const addText = text => copy.append(document.createTextNode(text));
+      const addSlot = (id, label) => {
+        const placedLabel = response.placements[id];
+        const slot = document.createElement("button"); slot.type = "button"; slot.className = "quiz-inline-slot"; slot.textContent = placedLabel || "___"; slot.disabled = checked;
+        slot.classList.toggle("correct", checked && placedLabel === label); slot.classList.toggle("incorrect", checked && Boolean(placedLabel) && placedLabel !== label);
+        const place = value => { if (!value || checked || placed.has(value)) return; response.placements[id] = value; finalQuizSelected = null; renderFinalQuizQuestion(); };
+        slot.addEventListener("click", () => { if (placedLabel && !checked) { delete response.placements[id]; renderFinalQuizQuestion(); } else place(finalQuizSelected); });
+        slot.addEventListener("dragover", event => { event.preventDefault(); slot.classList.add("dragover"); }); slot.addEventListener("dragleave", () => slot.classList.remove("dragover")); slot.addEventListener("drop", event => { event.preventDefault(); slot.classList.remove("dragover"); place(event.dataTransfer.getData("text/plain")); });
+        copy.append(slot);
+      };
+      addSlot("data", "Data"); addText(" are raw facts, figures, or observations collected through measurement, observation, or experimentation. "); addSlot("metadata", "Metadata"); addText(" are structured information that describe, explain, or provide context for a dataset.");
+      const cards = document.createElement("div"); cards.className = "quiz-fill-cards"; ["Data", "Metadata"].filter(label => !placed.has(label)).forEach(label => {
+        const card = document.createElement("button"); card.type = "button"; card.className = "quiz-fill-card"; card.textContent = label; card.disabled = checked; card.draggable = !checked; card.classList.toggle("selected", finalQuizSelected === label);
+        card.addEventListener("dragstart", event => { finalQuizSelected = label; event.dataTransfer.setData("text/plain", label); event.dataTransfer.effectAllowed = "move"; }); card.addEventListener("click", () => { finalQuizSelected = finalQuizSelected === label ? null : label; renderFinalQuizQuestion(); }); cards.append(card);
+      }); workspace.append(copy, cards);
+    }
+    function renderFinalQuizQuestion() {
+      const question = finalQuizQuestions[finalQuizQuestion], workspace = el("finalQuizWorkspace"); workspace.replaceChildren(); finalQuizSelected = finalQuizChecked[finalQuizQuestion] ? null : finalQuizSelected;
+      el("finalQuizKicker").textContent = question.kicker; el("finalQuizTitle").textContent = question.title; el("finalQuizInstruction").textContent = question.instruction; el("finalQuizQuestionMax").textContent = question.max; el("finalQuizPoints").textContent = finalQuizScores[finalQuizQuestion] || 0;
+      el("finalQuizGuideTitle").textContent = question.type === "multi" ? "Select all that apply" : "Concept guide"; el("finalQuizGuideText").textContent = question.guide[0]; el("finalQuizGuideList").replaceChildren(...question.guide[1].map(item => { const li = document.createElement("li"); li.textContent = item; return li; }));
+      if (question.media) { const media = document.createElement("img"); media.className = "quiz-media"; media.src = gameAsset(question.media); media.alt = "Illustration for this question"; workspace.append(media); }
+      if (question.type === "lifecycle") renderLifecycleQuestion(question, workspace);
+      if (question.type === "multi") renderMultiQuestion(question, workspace);
+      if (question.type === "truefalse") renderTrueFalseQuestion(question, workspace);
+      if (question.type === "data-metadata") renderDataMetadataQuestion(question, workspace);
+      const complete = finalQuizChecked[finalQuizQuestion]; el("finalQuizCheckBtn").hidden = complete; el("finalQuizCheckBtn").disabled = complete; el("finalQuizSolutionBtn").disabled = complete; el("finalQuizNextBtn").disabled = !complete; el("finalQuizNextBtn").textContent = finalQuizQuestion === finalQuizQuestions.length - 1 ? "See result" : "Next question";
+      if (!complete) { finalQuizFeedback("<strong>Ready?</strong> Answer the question, then check your work."); el("finalQuizStatus").textContent = ""; }
+      updateFinalQuizStats();
+    }
+    function scoreFinalQuestion(question, response) {
+      if (question.type === "lifecycle") return question.stages.reduce((score, [id, label]) => score + (response.placements?.[id] === label ? 1 : 0), 0);
+      if (question.type === "data-metadata") return (response.placements?.data === "Data" ? 1 : 0) + (response.placements?.metadata === "Metadata" ? 1 : 0);
+      if (question.type === "truefalse") return response.value === question.answer ? 1 : 0;
+      const selected = new Set(response.selected || []); let score = 0; question.options.forEach(([, correct], index) => { score += selected.has(index) ? (correct ? 1 : -1) : 0; }); return Math.max(0, score);
+    }
+    function finalQuestionAnswered(question, response) { if (question.type === "lifecycle") return Object.keys(response.placements || {}).length > 0; if (question.type === "data-metadata") return Object.keys(response.placements || {}).length > 0; if (question.type === "truefalse") return typeof response.value === "boolean"; return (response.selected || []).length > 0; }
+    function checkFinalQuizQuestion() {
+      const question = finalQuizQuestions[finalQuizQuestion], response = currentFinalResponse();
+      if (!finalQuestionAnswered(question, response)) { finalQuizFeedback("<strong>Choose an answer first.</strong> Then check your work.", "bad"); return; }
+      const score = scoreFinalQuestion(question, response); finalQuizScores[finalQuizQuestion] = score; finalQuizChecked[finalQuizQuestion] = true; renderFinalQuizQuestion();
+      finalQuizFeedback(score === question.max ? `<strong>Correct.</strong> You earned all ${question.max} point${question.max === 1 ? "" : "s"}.` : `<strong>${score} of ${question.max} points.</strong> Green marks correct answers; red marks incorrect selections.`, score === question.max ? "good" : "bad"); el("finalQuizStatus").textContent = "Use Try again to revise this question, or move on.";
+    }
+    function showFinalQuizSolution() {
+      const question = finalQuizQuestions[finalQuizQuestion], response = currentFinalResponse();
+      if (question.type === "lifecycle") response.placements = Object.fromEntries(question.stages.map(([id, label]) => [id, label]));
+      if (question.type === "data-metadata") response.placements = { data: "Data", metadata: "Metadata" };
+      if (question.type === "truefalse") response.value = question.answer;
+      if (question.type === "multi") response.selected = question.options.map(([, correct], index) => correct ? index : null).filter(index => index !== null);
+      finalQuizScores[finalQuizQuestion] ??= 0; finalQuizChecked[finalQuizQuestion] = true; renderFinalQuizQuestion(); finalQuizFeedback("<strong>Solution shown.</strong> This does not add points to your score; use Try again if you want to answer it yourself.", "good"); el("finalQuizStatus").textContent = "Solution shown — continue or retry this question.";
+    }
+    function retryFinalQuizQuestion() { finalQuizResponses[finalQuizQuestion] = {}; finalQuizScores[finalQuizQuestion] = 0; finalQuizChecked[finalQuizQuestion] = false; finalQuizSelected = null; renderFinalQuizQuestion(); }
+    function nextFinalQuizQuestion() { if (!finalQuizChecked[finalQuizQuestion]) return; if (finalQuizQuestion < finalQuizQuestions.length - 1) { finalQuizQuestion += 1; finalQuizSelected = null; renderFinalQuizQuestion(); } else { el("finalQuizGame").classList.add("hidden"); el("finalQuizCompletion").classList.remove("hidden"); const score = finalQuizScore(); el("finalQuizResult").textContent = score; el("finalQuizResultText").textContent = score >= finalQuizMax / 2 ? "You reached the 50% pass mark. Review any solutions and replay to make the concepts stick." : "Keep exploring the solutions, then try again to strengthen your data literacy."; } }
+    function startFinalQuiz() { finalQuizQuestion = 0; finalQuizResponses = finalQuizQuestions.map(() => ({})); finalQuizScores = finalQuizQuestions.map(() => 0); finalQuizChecked = finalQuizQuestions.map(() => false); finalQuizSelected = null; el("finalQuizGame").classList.remove("hidden"); el("finalQuizCompletion").classList.add("hidden"); renderFinalQuizQuestion(); }
+    function reviewFinalQuiz() { el("finalQuizGame").classList.remove("hidden"); el("finalQuizCompletion").classList.add("hidden"); finalQuizQuestion = 0; showFinalQuizSolution(); }
+
     if (el("restartBtn")) el("restartBtn").addEventListener("click", startGame);
     if (el("nextBtn")) el("nextBtn").addEventListener("click", nextRound);
     if (el("hintBtn")) el("hintBtn").addEventListener("click", showHint);
@@ -2003,19 +2312,29 @@
     if (el("detectiveTab")) el("detectiveTab").addEventListener("click", () => setGameView("detective"));
     if (el("typesTab")) el("typesTab").addEventListener("click", () => setGameView("types"));
     if (el("metadataTab")) el("metadataTab").addEventListener("click", () => setGameView("metadata"));
+    if (el("methodTab")) el("methodTab").addEventListener("click", () => setGameView("method"));
+    if (el("finalQuizTab")) el("finalQuizTab").addEventListener("click", () => setGameView("finalquiz"));
     if (el("typeNextBtn")) el("typeNextBtn").addEventListener("click", nextTypeRound);
     if (el("typeRestartBtn")) el("typeRestartBtn").addEventListener("click", startTypeGame);
     if (el("metadataNextBtn")) el("metadataNextBtn").addEventListener("click", nextMetadataLevel);
     if (el("metadataRestartBtn")) el("metadataRestartBtn").addEventListener("click", startMetadataGame);
+    if (el("methodCheckBtn")) el("methodCheckBtn").addEventListener("click", checkMethodGame);
+    if (el("methodSolutionBtn")) el("methodSolutionBtn").addEventListener("click", showMethodSolution);
+    if (el("methodRetryBtn")) el("methodRetryBtn").addEventListener("click", startMethodGame);
+    if (el("finalQuizCheckBtn")) el("finalQuizCheckBtn").addEventListener("click", checkFinalQuizQuestion);
+    if (el("finalQuizSolutionBtn")) el("finalQuizSolutionBtn").addEventListener("click", showFinalQuizSolution);
+    if (el("finalQuizRetryBtn")) el("finalQuizRetryBtn").addEventListener("click", retryFinalQuizQuestion);
+    if (el("finalQuizNextBtn")) el("finalQuizNextBtn").addEventListener("click", nextFinalQuizQuestion);
+    if (el("finalQuizRestartBtn")) el("finalQuizRestartBtn").addEventListener("click", startFinalQuiz);
+    if (el("finalQuizReviewBtn")) el("finalQuizReviewBtn").addEventListener("click", reviewFinalQuiz);
     if (el("copyrightYear")) el("copyrightYear").textContent = new Date().getFullYear();
     if (el("detectiveView")) startGame();
     if (el("typesView")) startTypeGame();
     if (el("metadataView")) startMetadataGame();
-    if (el("detectiveView") && (el("typesView") || el("metadataView"))) {
-      setGameView(location.hash === "#type-sorter" ? "types" : location.hash === "#metadata-explorer" ? "metadata" : "detective");
-    } else {
-      setGameView(el("typesView") ? "types" : el("metadataView") ? "metadata" : "detective");
-    }
+    if (el("methodView")) startMethodGame();
+    if (el("finalQuizView")) startFinalQuiz();
+    const hashViews = { "#data-detective": "detective", "#type-sorter": "types", "#metadata-explorer": "metadata", "#research-method": "method", "#final-data-quiz": "finalquiz" };
+    setGameView(hashViews[location.hash] || (el("detectiveView") ? "detective" : el("typesView") ? "types" : el("metadataView") ? "metadata" : el("methodView") ? "method" : "finalquiz"));
 
   </script>
 </body>

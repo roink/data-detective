@@ -20,7 +20,10 @@ for (const expectedPath of [
   "assets/hescor_logo.svg",
   "data-detective/index.html",
   "type-sorter/index.html",
-  "metadata-explorer/index.html"
+  "metadata-explorer/index.html",
+  "research-method/index.html",
+  "final-data-quiz/index.html",
+  "assets/final-data-quiz/lifecycle.png"
 ]) {
   if (!fs.existsSync(path.join(pagesDir, expectedPath))) {
     throw new Error(`Generated Pages site is missing ${expectedPath}`);
@@ -31,7 +34,9 @@ const artifacts = [
   { slug: "hescor-data-learning-lab", machineName: "H5P.DataLearningLab", combined: true },
   { slug: "data-detective", machineName: "H5P.DataDetective", gameId: "detectiveView" },
   { slug: "type-sorter", machineName: "H5P.TypeSorter", gameId: "typesView" },
-  { slug: "metadata-explorer", machineName: "H5P.MetadataExplorer", gameId: "metadataView" }
+  { slug: "metadata-explorer", machineName: "H5P.MetadataExplorer", gameId: "metadataView" },
+  { slug: "research-method", machineName: "H5P.ResearchMethod", gameId: "methodView" },
+  { slug: "final-data-quiz", machineName: "H5P.FinalDataQuiz", gameId: "finalQuizView" }
 ];
 
 for (const artifact of artifacts) {
@@ -56,8 +61,11 @@ for (const artifact of artifacts) {
 
   const appScript = fs.readFileSync(path.join(libraryDir, "app.js"), "utf8");
   new Function(appScript);
+  if (artifact.slug === "final-data-quiz" && !fs.existsSync(path.join(libraryDir, "assets", "final-data-quiz", "lifecycle.png"))) {
+    throw new Error("final-data-quiz.h5p is missing its lifecycle image");
+  }
   if (artifact.combined) {
-    for (const expected of ["site-header", "game-switcher", "detectiveView", "typesView", "metadataView", "brand-footer"]) {
+    for (const expected of ["site-header", "game-switcher", "detectiveView", "typesView", "metadataView", "methodView", "finalQuizView", "brand-footer"]) {
       if (!appScript.includes(expected)) throw new Error(`Combined H5P is missing ${expected}`);
     }
   } else {

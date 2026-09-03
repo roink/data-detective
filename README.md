@@ -4,11 +4,13 @@
 
 # HESCOR Data Learning Lab
 
-Three browser games for learning basic data literacy:
+Five browser games for learning basic data literacy:
 
 - **Data Detective** teaches data quality by asking players to spot errors in mock tables.
 - **Type Sorter** teaches binary, categorical, ordinal, and numerical variables through card sorting and explanatory feedback.
 - **Metadata Explorer** shows how metadata give a field-survey dataset meaning, context and reusability across seven short levels.
+- **Research Method** is a fill-in-the-blanks review of the path from a research question to FAIR sharing and outreach.
+- **Final Data Quiz** assesses the data lifecycle, preservation, data types, metadata and licensing across eight scored questions.
 
 Play the combined website at [roink.github.io/data-detective](https://roink.github.io/data-detective/).
 
@@ -17,6 +19,8 @@ Standalone, iframe-friendly versions without the exhibition header, game switche
 - [Data Detective](https://roink.github.io/data-detective/data-detective/)
 - [Type Sorter](https://roink.github.io/data-detective/type-sorter/)
 - [Metadata Explorer](https://roink.github.io/data-detective/metadata-explorer/)
+- [Research Method](https://roink.github.io/data-detective/research-method/)
+- [Final Data Quiz](https://roink.github.io/data-detective/final-data-quiz/)
 
 For example:
 
@@ -38,6 +42,8 @@ The latest validated packages are published as permanent GitHub Release download
 - [Data Detective only](https://github.com/roink/data-detective/releases/latest/download/data-detective.h5p)
 - [Type Sorter only](https://github.com/roink/data-detective/releases/latest/download/type-sorter.h5p)
 - [Metadata Explorer only](https://github.com/roink/data-detective/releases/latest/download/metadata-explorer.h5p)
+- [Research Method only](https://github.com/roink/data-detective/releases/latest/download/research-method.h5p)
+- [Final Data Quiz only](https://github.com/roink/data-detective/releases/latest/download/final-data-quiz.h5p)
 - [SHA-256 checksums](https://github.com/roink/data-detective/releases/latest/download/SHA256SUMS.txt)
 
 See the [latest release](https://github.com/roink/data-detective/releases/latest) for all downloads in one place.
@@ -56,11 +62,15 @@ scripts/
   data-detective/index.html
   type-sorter/index.html
   metadata-explorer/index.html
+  research-method/index.html
+  final-data-quiz/index.html
 dist/
   hescor-data-learning-lab.h5p
   data-detective.h5p
   type-sorter.h5p
   metadata-explorer.h5p
+  research-method.h5p
+  final-data-quiz.h5p
 ```
 
 ## Build and check
@@ -79,11 +89,13 @@ The deployment outputs are:
 | Artifact | Purpose |
 | --- | --- |
 | `index.html` and `assets/` | Canonical markup, styles, behavior, and branding |
-| `.build/pages/` | Generated Pages site with the combined homepage and three standalone routes |
-| `dist/hescor-data-learning-lab.h5p` | Combined H5P with all three games and full HESCOR header/footer |
+| `.build/pages/` | Generated Pages site with the combined homepage and five standalone routes |
+| `dist/hescor-data-learning-lab.h5p` | Combined H5P with all five games and full HESCOR header/footer |
 | `dist/data-detective.h5p` | Data Detective only, without site header/footer |
 | `dist/type-sorter.h5p` | Type Sorter only, without site header/footer |
 | `dist/metadata-explorer.h5p` | Metadata Explorer only, without site header/footer |
+| `dist/research-method.h5p` | Research Method only, without site header/footer |
+| `dist/final-data-quiz.h5p` | Final Data Quiz only, without site header/footer |
 
 The H5P files contain custom libraries. The account performing the first upload must therefore be allowed to install H5P libraries.
 
@@ -96,3 +108,19 @@ python3 -m http.server 4173
 ```
 
 Then open `http://127.0.0.1:4173/`.
+
+## How to cite
+
+If you use HESCOR Data Learning Lab, please cite it as software:
+
+```bibtex
+@software{schluter_robakiewicz_iannuzzi_2026_hescor_data_learning_lab,
+  author  = {Schl\"uter, Philipp and Robakiewicz, Elena and Iannuzzi, Vittorio},
+  title   = {HESCOR Data Learning Lab},
+  year    = {2026},
+  url     = {https://roink.github.io/data-detective/},
+  repository = {https://github.com/roink/data-detective}
+}
+```
+
+The machine-readable citation metadata are available in [CITATION.cff](CITATION.cff).
